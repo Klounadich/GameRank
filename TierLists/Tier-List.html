@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameRank - Создание тир-листа</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="cyberpunk-overlay"></div>
+    
+    <header class="cyber-header">
+        <div class="header-container">
+            <div class="logo">
+               <a href="/index.html" ><span class="logo-icon"><img src="/img/Logo.png" width="100px"></span>
+                <span class="logo-text">GameRank</span></a>
+            </div>
+            <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            <nav class="main-nav" id="mainNav">
+                <ul>
+                    <li><a href="index.html" class="nav-link"><i class="fas fa-home"></i> Главная</a></li>
+                    <li><a href="/Profile.html" class="nav-link"><i class="fas fa-user"></i> Профиль</a></li>
+                    <li><a href="#" class="nav-link"><i class="fas fa-newspaper"></i> Новости</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-content tierlist-creator">
+        <div class="creator-header">
+            <h1 class="cyber-text">Создание нового тир-листа</h1>
+            <div class="creator-actions">
+                <button class="save-tierlist"><i class="fas fa-save"></i> Сохранить</button>
+            </div>
+        </div>
+        
+        <div class="tierlist-name-edit">
+            <input type="text" placeholder="Название тир-листа" class="tierlist-title" value="Мой крутой тир-лист">
+        </div>
+        
+        <div class="tierlist-description">
+            <textarea placeholder="Описание тир-листа (необязательно)"></textarea>
+        </div>
+        
+        <div class="tierlist-container">
+            <div class="tierlist">
+                <div class="tier-row s-tier">
+                    <div class="tier-label">S</div>
+                    <div class="tier-content" id="tier-s"></div>
+                    <button class="edit-tier" title="Редактировать"><i class="fas fa-pencil-alt"></i></button>
+                </div>
+                <div class="tier-row a-tier">
+                    <div class="tier-label">A</div>
+                    <div class="tier-content" id="tier-a"></div>
+                    <button class="edit-tier" title="Редактировать"><i class="fas fa-pencil-alt"></i></button>
+                </div>
+                <div class="tier-row b-tier">
+                    <div class="tier-label">B</div>
+                    <div class="tier-content" id="tier-b"></div>
+                    <button class="edit-tier" title="Редактировать"><i class="fas fa-pencil-alt"></i></button>
+                </div>
+                <div class="tier-row c-tier">
+                    <div class="tier-label">C</div>
+                    <div class="tier-content" id="tier-c"></div>
+                    <button class="edit-tier" title="Редактировать"><i class="fas fa-pencil-alt"></i></button>
+                </div>
+                <div class="tier-row d-tier">
+                    <div class="tier-label">D</div>
+                    <div class="tier-content" id="tier-d"></div>
+                    <button class="edit-tier" title="Редактировать"><i class="fas fa-pencil-alt"></i></button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="games-library">
+            <h2 class="library-title"><i class="fas fa-gamepad"></i> Библиотека игр</h2>
+            <div class="games-search">
+                <input type="text" placeholder="Поиск игр...">
+                <button class="add-game-btn"><i class="fas fa-plus"></i> Добавить игру</button>
+            </div>
+            <div class="games-grid">
+                <div class="game-item" draggable="true">
+                    <img src="/img/Cyberpunk_2077_Example.jpg" alt="Игра 1">
+                    <span class="game-title">Cyberpunk 2077</span>
+                </div>
+                <div class="game-item" draggable="true">
+                    <img src="img/Sgame_Example.jpg" alt="Игра 2">
+                    <span class="game-title">The Witcher 3</span>
+                </div>
+                <div class="game-item" draggable="true">
+                    <img src="/img/Elden_Ring_Example.jpg" alt="Игра 3">
+                    <span class="game-title">Elden Ring</span>
+                </div>
+                <div class="game-item" draggable="true">
+                    <img src="/img/God_of_War_Example.jpg" alt="Игра 4">
+                    <span class="game-title">God of War</span>
+                </div>
+                <div class="game-item" draggable="true">
+                    <img src="/img/Red_Dead_Redemption_II_Example.jpg" alt="Игра 5">
+                    <span class="game-title">Red Dead 2</span>
+                </div>
+                <div class="game-item" draggable="true">
+                    <img src="/img/Hollow_Knight_Example.png" alt="Игра 6">
+                    <span class="game-title">Hollow Knight</span>
+                </div>
+                <div class="add-game-card">
+                    <div class="add-game-inner">
+                        <i class="fas fa-plus"></i>
+                        <span>Добавить игру</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="cyber-footer">
+        <div class="footer-content">
+            <div class="footer-logo">
+                <img src="/img/Logo.png" width="80px"> GameRank
+            </div>
+            <div class="footer-links">
+                <a href="#">О нас</a>
+                <a href="#">Правила</a>
+                <a href="#">Контакты</a>
+                <a href="#">API</a>
+            </div>
+            <div class="footer-social">
+                <a href="#"><i class="fab fa-discord"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-steam"></i></a>
+            </div>
+        </div>
+        <div class="footer-disclaimer">
+            © 2023 GameRank. Все права защищены. Все названия игр и связанные с ними изображения являются собственностью их правообладателей.
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

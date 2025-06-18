@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameRank - Профиль пользователя</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="cyberpunk-overlay"></div>
+    
+    <header class="cyber-header">
+        <div class="header-container">
+            <div class="logo">
+                <a href="/index.html"><span class="logo-icon"><img src="/img/Logo.png" width="100px"></span>
+                <span class="logo-text">GameRank</span></a>
+            </div>
+            <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            <nav class="main-nav" id="mainNav">
+                <ul>
+                    <li><a href="index.html" class="nav-link"><i class="fas fa-home"></i> Главная</a></li>
+                    <li><a href="/Tier-List.html" class="nav-link"><i class="fas fa-plus-circle"></i> Создать тир-лист</a></li>
+                    <li><a href="#" class="nav-link"><i class="fas fa-newspaper"></i> Новости</a></li>
+                    <li><a href="#" class="nav-link"><i class="fas fa-cog"></i> Настройки</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-content profile-container">
+        <section class="profile-header">
+            <div class="profile-avatar">
+                <img src="/img/default-avatar.jpg" alt="Аватар пользователя">
+                <button class="edit-avatar"><i class="fas fa-camera"></i></button>
+            </div>
+            <div class="profile-info">
+                <h1 class="profile-username">CyberGamer42</h1>
+                <p class="profile-email"><i class="fas fa-envelope"></i> cybergamer@example.com</p>
+                <div class="profile-stats">
+                    <div class="stat-item">
+                        <span class="stat-number">24</span>
+                        <span class="stat-label">Тир-листа</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">156</span>
+                        <span class="stat-label">Ачивки</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">3</span>
+                        <span class="stat-label">Года</span>
+                    </div>
+                </div>
+                <button class="edit-profile"><i class="fas fa-user-edit"></i> Редактировать профиль</button>
+            </div>
+        </section>
+
+        <section class="profile-sections">
+            <div class="section-tabs">
+                <button class="tab-btn active" data-tab="tierlists">Мои тир-листы</button>
+                <button class="tab-btn" data-tab="achievements">Ачивки</button>
+                <button class="tab-btn" data-tab="activity">Активность</button>
+            </div>
+
+            <div class="tab-content active" id="tierlists">
+                <div class="tierlist-grid">
+                    <div class="tierlist-card">
+                        <div class="tierlist-preview">
+                            <img src="/img/shuters.png" alt="Превью тир-листа">
+                            <div class="tierlist-badge">S+</div>
+                        </div>
+                        <div class="tierlist-info">
+                            <h3>Лучшие шутеры 2023</h3>
+                            <div class="tierlist-meta">
+                                <span><i class="fas fa-eye"></i> 1.2K</span>
+                                <span><i class="fas fa-comment"></i> 47</span>
+                                <span><i class="fas fa-calendar"></i> 2 дня назад</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tierlist-card">
+                        <div class="tierlist-preview">
+                            <img src="/img/rpgs.jpg" alt="Превью тир-листа">
+                            <div class="tierlist-badge">A</div>
+                        </div>
+                        <div class="tierlist-info">
+                            <h3>РПГ всех времен</h3>
+                            <div class="tierlist-meta">
+                                <span><i class="fas fa-eye"></i> 3.4K</span>
+                                <span><i class="fas fa-comment"></i> 128</span>
+                                <span><i class="fas fa-calendar"></i> 1 месяц назад</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tierlist-card">
+                        <div class="tierlist-preview">
+                            <img src="/img/ind.jpeg" alt="Превью тир-листа">
+                            <div class="tierlist-badge">S</div>
+                        </div>
+                        <div class="tierlist-info">
+                            <h3>Инди-жемчужины</h3>
+                            <div class="tierlist-meta">
+                                <span><i class="fas fa-eye"></i> 2.1K</span>
+                                <span><i class="fas fa-comment"></i> 89</span>
+                                <span><i class="fas fa-calendar"></i> 3 недели назад</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-content" id="achievements">
+                <div class="achievements-grid">
+                    <div class="achievement-card gold">
+                        <div class="achievement-icon">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <div class="achievement-info">
+                            <h3>Мастер тир-листов</h3>
+                            <p>Создал 20+ тир-листов</p>
+                            <span class="achievement-date">Получено: 15.06.2023</span>
+                        </div>
+                    </div>
+
+                    <div class="achievement-card silver">
+                        <div class="achievement-icon">
+                            <i class="fas fa-comment-dots"></i>
+                        </div>
+                        <div class="achievement-info">
+                            <h3>Общительный</h3>
+                            <p>Оставил 100+ комментариев</p>
+                            <span class="achievement-date">Получено: 02.05.2023</span>
+                        </div>
+                    </div>
+
+                    <div class="achievement-card bronze">
+                        <div class="achievement-icon">
+                            <i class="fas fa-fire"></i>
+                        </div>
+                        <div class="achievement-info">
+                            <h3>Горячая тема</h3>
+                            <p>Тир-лист получил 1K+ просмотров</p>
+                            <span class="achievement-date">Получено: 22.04.2023</span>
+                        </div>
+                    </div>
+
+                    <div class="achievement-card">
+                        <div class="achievement-icon">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="achievement-info">
+                            <h3>Новичок</h3>
+                            <p>Создал первый тир-лист</p>
+                            <span class="achievement-date">Получено: 10.03.2023</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-content" id="activity">
+                <div class="activity-list">
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas fa-plus-circle"></i>
+                        </div>
+                        <div class="activity-content">
+                            <p>Вы создали новый тир-лист <a href="#">"Лучшие шутеры 2023"</a></p>
+                            <span class="activity-time">2 дня назад</span>
+                        </div>
+                    </div>
+
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas fa-comment"></i>
+                        </div>
+                        <div class="activity-content">
+                            <p>Вы прокомментировали тир-лист <a href="#">"РПГ всех времен"</a></p>
+                            <span class="activity-time">5 дней назад</span>
+                        </div>
+                    </div>
+
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <div class="activity-content">
+                            <p>Вы получили достижение <a href="#">"Мастер тир-листов"</a></p>
+                            <span class="activity-time">1 неделю назад</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="cyber-footer">
+        <div class="footer-content">
+            <div class="footer-logo">
+                <img src="/img/Logo.png" width="80px"> GameRank
+            </div>
+            <div class="footer-links">
+                <a href="#">О нас</a>
+                <a href="#">Правила</a>
+                <a href="#">Контакты</a>
+                <a href="#">API</a>
+            </div>
+            <div class="footer-social">
+                <a href="#"><i class="fab fa-discord"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-steam"></i></a>
+            </div>
+        </div>
+        <div class="footer-disclaimer">
+            © 2023 GameRank. Все права защищены. Все названия игр и связанные с ними изображения являются собственностью их правообладателей.
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // Табы на странице профиля
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    
+                    // Удаляем активный класс у всех кнопок и контента
+                    tabBtns.forEach(btn => btn.classList.remove('active'));
+                    tabContents.forEach(content => content.classList.remove('active'));
+                    
+                    // Добавляем активный класс текущей кнопке и соответствующему контенту
+                    this.classList.add('active');
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

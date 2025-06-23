@@ -77,11 +77,25 @@
         </div>
         
         <div class="games-library">
-            <h2 class="library-title"><i class="fas fa-gamepad"></i> Библиотека игр</h2>
-            <div class="games-search">
-                <input type="text" placeholder="Поиск игр...">
-                <button class="add-game-btn"><i class="fas fa-plus"></i> Добавить игру</button>
+    <h2 class="library-title"><i class="fas fa-gamepad"></i> Библиотека игр</h2>
+    <div class="search-container">
+    <div class="games-search">
+        <input type="text" placeholder="Поиск игр..." id="game-search-input">
+        <div id="search-dropdown">
+           
+            <div class="search-result-item">
+                <img src="/img/" alt="Тест">
+                <span class="game-title">Hollow Knight</span>
             </div>
+            <div class="search-result-item">
+                <img src="/img/" alt="Тест">
+                <span class="game-title">Cyberpunk2077</span>
+            </div>
+
+        
+    </div>
+    <button class="add-game-btn"><i class="fas fa-plus"></i> Добавить игру</button>
+</div>
             <div class="games-grid">
                 <div class="game-item"data-game-id="cyberpunk-2077" draggable="true">
                     <img src="/img/Cyberpunk_2077_Example.jpg" alt="Игра 1">

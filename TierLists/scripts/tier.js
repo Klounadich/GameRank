@@ -8,37 +8,63 @@ document.addEventListener('DOMContentLoaded', function() {
     
     const allDropZones = [...tierContents, gamesGrid];
 
-    const editLabels = document.querySelectorAll('.edit-tier');
+    const editButtons = document.querySelectorAll('.edit-tier');
 
-    editLabels.forEach(button => {
-        button.addEventListener('click', function() {
-            const tierRow = this.closest('.tier-row');
-            const tierLabel = tierRow.querySelector('.tier-label');
+    editButtons.forEach(button => {
+    button.addEventListener('click', function() {
+        const tierRow = this.closest('.tier-row');
+        const tierLabel = tierRow.querySelector('.tier-label');
+        
+        
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.value = tierLabel.textContent;
+        input.className = 'tier-edit-input';
+        
+        
+        tierLabel.replaceWith(input);
+        input.focus();
+
+        
+        const saveEdit = () => {
+            tierLabel.textContent = input.value;
             
-            const input = document.createElement('input');
-            input.type = 'text';
-            input.value = tierLabel.textContent;
-            input.className = 'tier-edit-input';
+            
+            tierLabel.style.width = input.style.width;
+            tierLabel.style.fontSize = input.style.fontSize;
+            
+            input.replaceWith(tierLabel);
+            document.removeEventListener('keydown', handleKeyDown);
+        };
 
-            tierLabel.replaceWith(input);
-            input.focus();
+        
+        const handleKeyDown = (e) => {
+            if (e.key === 'Enter') saveEdit();
+            if (e.key === 'Escape') input.replaceWith(tierLabel);
+        };
 
-            const saveEdit = () => {
-                tierLabel.textContent = input.value;
-                input.replaceWith(tierLabel);
-                document.removeEventListener('keydown', handleKeyDown);
-            };
+        
+        const resizeInput = () => {
+            const tempSpan = document.createElement('span');
+            tempSpan.style.visibility = 'hidden';
+            tempSpan.style.whiteSpace = 'nowrap';
+            tempSpan.style.font = window.getComputedStyle(input).font;
+            tempSpan.textContent = input.value || 'A';
+            
+            document.body.appendChild(tempSpan);
+            const newWidth = Math.min(tempSpan.offsetWidth + 20, 200);
+            input.style.width = `${newWidth}px`;
+            document.body.removeChild(tempSpan);
+        };
 
-            const handleKeyDown = (e) => {
-                if (e.key === 'Enter') {
-                    saveEdit();
-                }
-            };
-
-            input.addEventListener('blur', saveEdit);
-            document.addEventListener('keydown', handleKeyDown);
-        });
+        input.addEventListener('input', resizeInput);
+        input.addEventListener('blur', saveEdit);
+        document.addEventListener('keydown', handleKeyDown);
+        
+        
+        resizeInput();
     });
+});
     gameItems.forEach(item => {
         item.addEventListener('dragstart', handleDragStart);
         item.addEventListener('dragend', handleDragEnd);
@@ -95,4 +121,10 @@ document.addEventListener('DOMContentLoaded', function() {
         
         this.appendChild(draggedItem);
     }
+        const Input = document.getElementById('game-search-input');
+        const SearchLabel = document.getElementById('search-dropdown');
+        
+        Input.addEventListener('click', () =>{
+            SearchLabel.style.display='block';
+        });
 });

@@ -1482,25 +1482,363 @@ body {
 }
 
 .games-search {
+    position: relative;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+#search-dropdown {
+    position: absolute;
+    top: calc(100% + 5px);
+    left: 0;
+    width: 100%;
+    max-height: 300px;
+    overflow-y: auto;
+    background: #1a1a2e;
+    border: 1px solid #00ffff;
+    border-radius: 4px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+/* Отображаем при активном поиске */
+.games-search.active .search-dropdown {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Стили для тестового контента */
+.search-result-item {
+    padding: 12px;
+    color: white;
+    border-bottom: 1px solid #16213e;
+    cursor: pointer;
+}
+
+.search-result-item:hover {
+    background: #16213e;
+}
+
+.search-result-item img {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 4px;
+    margin-right: 15px;
+}
+
+.search-result-item .game-title {
+    color: #fff;
+    font-size: 16px;
+    flex-grow: 1;
+}
+
+.search-result-item .game-year {
+    color: #aaa;
+    font-size: 14px;
+    margin-left: 10px;
+}
+
+/* Полоса прокрутки */
+.search-dropdown::-webkit-scrollbar {
+    width: 8px;
+}
+
+.search-dropdown::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.search-dropdown::-webkit-scrollbar-thumb {
+    background: #00ffff;
+    border-radius: 4px;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .games-search input[type="text"] {
+        padding: 10px 15px;
+        font-size: 14px;
+    }
+    
+    .search-result-item {
+        padding: 10px;
+    }
+    
+    .search-result-item img {
+        width: 30px;
+        height: 30px;
+        margin-right: 10px;
+    }
+    
+    .search-dropdown {
+        max-height: 300px;
+    }
+}
+
+/* Profile Edit Modal Styles */
+.profile-edit-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(8, 8, 15, 0.95);
+    z-index: 2000;
+    backdrop-filter: blur(5px);
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    overflow-y: auto;
+}
+
+.profile-edit-content {
+    background-color: var(--dark);
+    border-radius: 8px;
+    padding: 2rem;
+    width: 100%;
+    max-width: 600px;
+    box-shadow: 0 0 30px rgba(110, 0, 255, 0.5);
+    border: 1px solid var(--primary);
+    position: relative;
+    animation: modalFadeIn 0.3s ease-out;
+}
+
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.close-edit-modal {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-size: 1.5rem;
+    color: var(--light);
+    cursor: pointer;
+    transition: color 0.3s ease;
+    background: none;
+    border: none;
+    z-index: 1;
+}
+
+.close-edit-modal:hover {
+    color: var(--danger);
+}
+
+.profile-edit-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    position: relative;
+}
+
+.profile-edit-header h2 {
+    font-size: 1.8rem;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin-bottom: 0.5rem;
+}
+
+.profile-edit-header p {
+    color: rgba(224, 224, 224, 0.7);
+    font-size: 0.9rem;
+}
+
+/* Avatar Edit Section */
+.avatar-edit-section {
     display: flex;
-    gap: 1rem;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 2rem;
+    position: relative;
+}
+
+.avatar-preview {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid var(--primary);
+    box-shadow: 0 0 20px rgba(110, 0, 255, 0.5);
     margin-bottom: 1.5rem;
+    position: relative;
+}
+
+.avatar-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.avatar-upload-btn {
+    padding: 0.8rem 1.5rem;
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.avatar-upload-btn:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-2px);
+}
+
+.avatar-upload-input {
+    display: none;
+}
+
+/* Form Styles */
+.profile-edit-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form-group label {
+    color: var(--light);
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.form-group label i {
+    color: var(--secondary);
+    width: 20px;
+    text-align: center;
+}
+
+.form-control {
+    padding: 0.8rem 1rem;
+    border-radius: 4px;
+    border: 1px solid var(--gray);
+    background-color: rgba(42, 42, 58, 0.7);
+    color: var(--light);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px rgba(110, 0, 255, 0.3);
+}
+
+textarea.form-control {
+    min-height: 100px;
+    resize: vertical;
+}
+
+/* Form Actions */
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 1rem;
     flex-wrap: wrap;
 }
 
-.games-search input {
-    flex: 1;
-    min-width: 200px;
-    padding: 0.8rem 1rem;
-    background-color: rgba(42, 42, 58, 0.7);
-    border: 1px solid var(--gray);
+.btn {
+    padding: 0.8rem 1.5rem;
     border-radius: 4px;
-    color: var(--light);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border: none;
 }
 
-.games-search input:focus {
-    outline: none;
-    border-color: var(--primary);
+.btn-primary {
+    background-color: var(--primary);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 0 20px rgba(110, 0, 255, 0.3);
+}
+
+.btn-secondary {
+    background-color: transparent;
+    color: var(--secondary);
+    border: 2px solid var(--secondary);
+}
+
+.btn-secondary:hover {
+    background-color: rgba(0, 240, 255, 0.1);
+    transform: translateY(-2px);
+    box-shadow: 0 0 20px rgba(0, 240, 255, 0.2);
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .profile-edit-content {
+        padding: 1.5rem;
+    }
+    
+    .profile-edit-header h2 {
+        font-size: 1.5rem;
+    }
+    
+    .avatar-preview {
+        width: 120px;
+        height: 120px;
+    }
+    
+    .form-actions {
+        justify-content: center;
+    }
+    
+    .btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .profile-edit-content {
+        padding: 1rem;
+    }
+    
+    .profile-edit-header h2 {
+        font-size: 1.3rem;
+    }
+    
+    .form-group label {
+        font-size: 0.9rem;
+    }
+    
+    .form-control {
+        padding: 0.7rem 0.9rem;
+        font-size: 0.9rem;
+    }
 }
 
 .add-game-btn {

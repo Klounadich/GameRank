@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameRank - Топ тир-листов</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="icon" href="/img/Logo.png"  type="image/png">
+</head>
+<body>
+    <div class="cyberpunk-overlay"></div>
+    
+    <header class="cyber-header">
+        <div class="header-container">
+            <div class="logo">
+                <a href="/index.html"><span class="logo-icon"><img src="/img/Logo.png" width="100px"></span>
+                <span class="logo-text">GameRank</span></a>
+            </div>
+            <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            <nav class="main-nav" id="mainNav">
+                <ul>
+                    <li><a href="index.html" class="nav-link"><i class="fas fa-home"></i> Главная</a></li>
+                    <li><a href="create-tierlist.html" class="nav-link"><i class="fas fa-plus-circle"></i> Создать</a></li>
+                    <li><a href="profile.html" class="nav-link"><i class="fas fa-user"></i> Профиль</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-content tierlists-feed">
+        <div class="feed-header">
+            <h1 class="cyber-text">Топ тир-листов</h1>
+            <div class="sort-options">
+                <select>
+                    <option>По популярности</option>
+                    <option>По новизне</option>
+                    <option>По лайкам</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="feed-container">
+            <!-- Тир-лист 1 -->
+           <!-- Тир-лист 1 -->
+<div class="tierlist-card">
+    <div class="user-info">
+        <img src="/img/default-avatar.jpg" alt="Аватар" class="user-avatar">
+        <span class="username">CyberGamer</span>
+    </div>
+    <div class="tierlist-preview">
+        <img src="/img/shuters.png" alt="Превью тир-листа">
+        <div class="tierlist-overlay">
+            <h3>Лучшие шутеры 2023</h3>
+            <p>Рейтинг самых популярных шутеров этого года по моему мнению</p>
+        </div>
+        <div class="tierlist-badge">S</div>
+    </div>
+    <div class="engagement">
+        <div class="likes"><i class="fas fa-heart"></i> 1.2K</div>
+        <div class="comments"><i class="fas fa-comment"></i> 87</div>
+        <div class="views"><i class="fas fa-eye"></i> 5.4K</div>
+    </div>
+</div>
+
+<!-- Тир-лист 2 -->
+<div class="tierlist-card">
+    <div class="user-info">
+        <img src="/img/Avatar_Example_1.jpg" alt="Аватар" class="user-avatar">
+        <span class="username">GameMaster</span>
+    </div>
+    <div class="tierlist-preview">
+        <img src="/img/rpgs.jpg" alt="Превью тир-листа">
+        <div class="tierlist-overlay">
+            <h3>РПГ всех времен</h3>
+            <p>Мой субъективный рейтинг лучших RPG за всю историю</p>
+        </div>
+        <div class="tierlist-badge">A</div>
+    </div>
+    <div class="engagement">
+        <div class="likes"><i class="fas fa-heart"></i> 2.8K</div>
+        <div class="comments"><i class="fas fa-comment"></i> 143</div>
+        <div class="views"><i class="fas fa-eye"></i> 12.7K</div>
+    </div>
+</div>
+
+<!-- Тир-лист 3 -->
+<div class="tierlist-card">
+    <div class="user-info">
+        <img src="/img/Avatar_Example_2.jpg" alt="Аватар" class="user-avatar">
+        <span class="username">IndieLover</span>
+    </div>
+    <div class="tierlist-preview">
+        <img src="/img/ind.jpeg" alt="Превью тир-листа">
+        <div class="tierlist-overlay">
+            <h3>Инди-жемчужины</h3>
+            <p>Независимые игры, которые заслуживают внимания</p>
+        </div>
+        <div class="tierlist-badge">B</div>
+    </div>
+    <div class="engagement">
+        <div class="likes"><i class="fas fa-heart"></i> 950</div>
+        <div class="comments"><i class="fas fa-comment"></i> 62</div>
+        <div class="views"><i class="fas fa-eye"></i> 4.1K</div>
+    </div>
+</div>
+        </div>
+    </main>
+
+    <footer class="cyber-footer">
+        <div class="footer-content">
+            <div class="footer-logo">
+                <img src="/img/Logo.png" width="80px"> GameRank
+            </div>
+            <div class="footer-links">
+                <a href="#">О нас</a>
+                <a href="#">Правила</a>
+                <a href="#">Контакты</a>
+                <a href="#">API</a>
+            </div>
+            <div class="footer-social">
+                <a href="#"><i class="fab fa-discord"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-steam"></i></a>
+            </div>
+        </div>
+        <div class="footer-disclaimer">
+            © 2023 GameRank. Все права защищены. Все названия игр и связанные с ними изображения являются собственностью их правообладателей.
+        </div>
+    </footer>
+
+    <script src="/scripts/main.js"></script>
+</body>
+</html>

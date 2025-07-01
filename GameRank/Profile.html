@@ -25,7 +25,7 @@
                     <li><a href="index.html" class="nav-link"><i class="fas fa-home"></i> Главная</a></li>
                     <li><a href="/Tier-List.html" class="nav-link"><i class="fas fa-plus-circle"></i> Создать тир-лист</a></li>
                     <li><a href="#" class="nav-link"><i class="fas fa-newspaper"></i> Новости</a></li>
-                    <li><a href="#" class="nav-link"><i class="fas fa-cog"></i> Настройки</a></li>
+                    <li><a href="#" class="nav-link" id="ttt"><i class="fas fa-cog"></i> Настройки</a></li>
                 </ul>
             </nav>
         </div>
@@ -38,8 +38,8 @@
                 <button class="edit-avatar"><i class="fas fa-camera"></i></button>
             </div>
             <div class="profile-info">
-                <h1 class="profile-username">CyberGamer42</h1>
-                <p class="profile-email"><i class="fas fa-envelope"></i> cybergamer@example.com</p>
+                <h1 class="profile-username"></h1>
+                <p class="profile-email"><i class="fas fa-envelope"></i> </p>
                 <div class="profile-stats">
                     <div class="stat-item">
                         <span class="stat-number">24</span>
@@ -239,6 +239,37 @@
                 </div>
             </div>
         </section>
+        <!-- Settings Modal -->
+<div class="settings-modal" id="settingsModal">
+    <div class="settings-content">
+        <button class="close-settings-modal" id="closeSettingsModal"><i class="fas fa-times"></i></button>
+        
+        <div class="settings-header">
+            <h2><i class="fas fa-cog"></i> Настройки профиля</h2>
+            <p>Управление вашей учетной записью и настройками</p>
+        </div>
+        
+        <div class="settings-body">
+            <div class="settings-section">
+                <h3><i class="fas fa-user-shield"></i> Безопасность</h3>
+                <button class="settings-btn"><i class="fas fa-lock"></i> Изменить пароль</button>
+                <button class="settings-btn"><i class="fas fa-envelope"></i> Изменить email</button>
+            </div>
+            
+            <div class="settings-section">
+                <h3><i class="fas fa-bell"></i> Уведомления</h3>
+                <button class="settings-btn"><i class="fas fa-comment-alt"></i> Настройки уведомлений</button>
+                <button class="settings-btn"><i class="fas fa-palette"></i> Внешний вид</button>
+            </div>
+            
+            <div class="settings-section danger-zone">
+                <h3><i class="fas fa-exclamation-triangle"></i> Опасная зона</h3>
+                <button class="settings-btn danger-btn" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Выйти из аккаунта</button>
+                <button class="settings-btn danger-btn" id="deleteAccountBtn"><i class="fas fa-trash-alt"></i> Удалить аккаунт</button>
+            </div>
+        </div>
+    </div>
+</div>
     </main>
 
     <footer class="cyber-footer">
@@ -286,7 +317,68 @@
         });
     </script>
     <script src="/scripts/profile.js"></script>
-
+    <script>
+        // Settings Modal Functionality
+document.addEventListener('DOMContentLoaded', function() {
+    // Get modal elements
+    const settingsModal = document.getElementById('settingsModal');
+    const settingsBtn = document.getElementById('ttt'); // Кнопка настроек в навигации
+    const closeSettingsModal = document.getElementById('closeSettingsModal');
+    
+    // Open modal when settings button is clicked
+    if(settingsBtn) {
+        settingsBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            settingsModal.style.display = 'flex';
+            document.body.style.overflow = 'hidden'; // Prevent scrolling when modal is open
+        });
+    }
+    
+    // Close modal when X button is clicked
+    if(closeSettingsModal) {
+        closeSettingsModal.addEventListener('click', function() {
+            settingsModal.style.display = 'none';
+            document.body.style.overflow = 'auto'; // Re-enable scrolling
+        });
+    }
+    
+    // Close modal when clicking outside of it
+    settingsModal.addEventListener('click', function(e) {
+        if(e.target === settingsModal) {
+            settingsModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+    });
+    
+    // Logout button functionality
+    const logoutBtn = document.getElementById('logoutBtn');
+    if(logoutBtn) {
+        logoutBtn.addEventListener('click', function() {
+            if(confirm('Вы уверены, что хотите выйти из аккаунта?')) {
+                // Here you would typically make an AJAX request to logout
+                alert('Вы успешно вышли из аккаунта');
+                // window.location.href = '/logout'; // Uncomment this in production
+            }
+        });
+    }
+    
+    // Delete account button functionality
+    const deleteAccountBtn = document.getElementById('deleteAccountBtn');
+    if(deleteAccountBtn) {
+        deleteAccountBtn.addEventListener('click', function() {
+            if(confirm('ВНИМАНИЕ! Это действие нельзя отменить. Все ваши данные будут удалены безвозвратно. Вы уверены, что хотите удалить аккаунт?')) {
+                if(prompt('Для подтверждения введите "УДАЛИТЬ" (без кавычек):') === 'УДАЛИТЬ') {
+                    // Here you would typically make an AJAX request to delete account
+                    alert('Ваш аккаунт был удален');
+                    // window.location.href = '/delete-account'; // Uncomment this in production
+                } else {
+                    alert('Неверное подтверждение. Удаление отменено.');
+                }
+            }
+        });
+    }
+});
+    </script>
     
 </body>
 </html>

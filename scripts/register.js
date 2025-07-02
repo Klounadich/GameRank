@@ -13,7 +13,7 @@ document.getElementById("registerForm").addEventListener("submit", async (e) => 
         if (password!=returnpass){
             showAlert("Ошибка: Пароли не совпадают" , 'error');
         }
-        const response = await fetch("http://127.0.0.1:5000/api/auth/register", {
+        const response = await fetch("http://192.168.0.100:80/api/auth/register", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -29,7 +29,8 @@ document.getElementById("registerForm").addEventListener("submit", async (e) => 
         if (response.ok) {
             showAlert('Регистрация успешна!', 'success');
             setTimeout(() => {
-                window.location.href = "/Profile.html";
+                //window.location.href = "/Profile.html";
+            
             }, 1500);
         } 
         else {

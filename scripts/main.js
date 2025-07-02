@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
 
     const data = {
-        username: document.getElementById("Auth_UserName").value,
+        UserName: document.getElementById("Auth_UserName").value,
         
         password: document.getElementById("Auth_Pass").value
     };
@@ -57,27 +57,39 @@ document.addEventListener('DOMContentLoaded', function() {
 
     try {
         
-        const response = await fetch("http://127.0.0.1:5000/api/auth/authoriz", {
+        const response = await fetch("http://192.168.0.100:80/api/auth/authoriz", {
             method: "POST",
+            credentials:'include',
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify(data),
                 
-        });
-        console.log("Status:", response.status, response.statusText);
-         console.log(response);
+        })
+
+        
+
+        
         const result = await response.json();
         
 
+         console.log('Full response:', response);
+        console.log('Response data:', result);
+
         if (response.ok) {
-            showAlert('Авторизация  успешна!', 'success');
-            setTimeout(() => {
+            console.log(response.headers.get('set-cookie'));
+            // 1. Проверяем, есть ли RedirectUrl в ответе
+            if (result.RedirectUrl) {
+                console.log('Redirecting to:', result.RedirectUrl);
+                // 2. Выполняем редирект вручную
                 window.location.href = "/Profile.html";
-            }, 1500);
-        } 
-        else {
-            showAlert("Ошибка: " + (result.message || "Unknown error"));
+            } else {
+                console.error('No RedirectUrl in response');
+                //window.location.href = "/Profile.html";
+            }
+        } else {
+            console.error('Login failed:', data.Message || 'Unknown error');
+            alert(data.Message || 'Login failed');
         }
     } catch (error) {
         

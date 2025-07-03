@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // profile.js
 async function LoadProfile() {
     try {
-        const response = await fetch('http://192.168.0.100:80/api/user/usershow', {
+        const response = await fetch('http://192.168.0.103:5001/api/user/usershow', {
             method: 'GET',
             credentials: 'include',
             headers: {
@@ -78,7 +78,7 @@ async function LoadProfile() {
 
 async function handleLogout() {
     try {
-        const response = await fetch('http://192.168.0.100:80/api/user/signout', {
+        const response = await fetch('http://192.168.0.103:5001/api/user/signout', {
             method: 'POST',
             credentials: 'include'
         });

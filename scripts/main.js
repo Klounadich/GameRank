@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     try {
         
-        const response = await fetch("http://192.168.0.100:80/api/auth/authoriz", {
+        const response = await fetch("http://192.168.0.103:5001/api/auth/authoriz", {
             method: "POST",
             credentials:'include',
             headers: {

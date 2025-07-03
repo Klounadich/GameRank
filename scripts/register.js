@@ -12,9 +12,11 @@ document.getElementById("registerForm").addEventListener("submit", async (e) => 
     try {
         if (password!=returnpass){
             showAlert("Ошибка: Пароли не совпадают" , 'error');
+            
         }
-        const response = await fetch("http://192.168.0.100:80/api/auth/register", {
+        const response = await fetch("http://192.168.0.103:5001/api/auth/register", {
             method: "POST",
+            credentials:'include',
             headers: {
                 "Content-Type": "application/json",
             },
@@ -28,10 +30,10 @@ document.getElementById("registerForm").addEventListener("submit", async (e) => 
 
         if (response.ok) {
             showAlert('Регистрация успешна!', 'success');
-            setTimeout(() => {
-                //window.location.href = "/Profile.html";
+                console.log(response.message)
+                window.location.href = "/Profile.html";
             
-            }, 1500);
+            
         } 
         else {
             showAlert("Ошибка: " + (result.message || "Unknown error"));

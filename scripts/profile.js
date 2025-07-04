@@ -96,11 +96,24 @@ async function handleLogout() {
 }
 
 function updateProfileUI(data) {
+    console.log('Получены данные профиля:', data); // Для отладки
+    
     const usernameEl = document.querySelector('.profile-username');
     const emailEl = document.querySelector('.profile-email');
     
-    if (usernameEl) usernameEl.textContent = data.Username || 'Гость';
-    if (emailEl) emailEl.innerHTML = `<i class="fas fa-envelope"></i> ${data.Email || ''}`;
+    // Проверяем, найдены ли элементы
+    if (!usernameEl || !emailEl) {
+        console.error('Элементы профиля не найдены в DOM');
+        return;
+    }
+    
+    // Проверяем и нормализуем данные
+    const username = data?.userName || data?.username || data?.user?.name || 'Гость';
+    const email = data?.Email || data?.email || data?.user?.email || 'Не указан';
+    
+    // Обновляем UI
+    usernameEl.textContent = username;
+    emailEl.innerHTML = `<i class="fas fa-envelope"></i> ${email}`;
 }
 
 function showError(message) {

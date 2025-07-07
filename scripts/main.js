@@ -73,23 +73,24 @@ document.addEventListener('DOMContentLoaded', function() {
         const result = await response.json();
         
 
-         console.log('Full response:', response);
-        console.log('Response data:', result);
+         
 
         if (response.ok) {
-            console.log(response.headers.get('set-cookie'));
-            // 1. Проверяем, есть ли RedirectUrl в ответе
+            
             if (result.RedirectUrl) {
-                console.log('Redirecting to:', result.RedirectUrl);
-                // 2. Выполняем редирект вручную
+                
+                showAlert('Вы авторизованы!', 'success');
                 window.location.href = "/Profile.html";
-            } else {
-                console.error('No RedirectUrl in response');
-                //window.location.href = "/Profile.html";
+            } 
+            else {
+                
+            showAlert("Ошибка: " + (result.message || "Unknown error"));
+        
+                window.location.href = "/Profile.html";
             }
         } else {
             console.error('Login failed:', data.Message || 'Unknown error');
-            alert(data.Message || 'Login failed');
+             showAlert("Ошибка: " + (result.message || "Unknown error"));
         }
     } catch (error) {
         

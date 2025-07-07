@@ -26,20 +26,23 @@ document.getElementById("registerForm").addEventListener("submit", async (e) => 
         console.log("Status:", response.status, response.statusText);
          console.log(response);
         const result = await response.json();
-        
+        console.log(result.message);
 
         if (response.ok) {
             showAlert('Регистрация успешна!', 'success');
-                console.log(response.message)
+                console.log(result.message)
+                console.log("1")
                 window.location.href = "/Profile.html";
             
             
         } 
         else {
             showAlert("Ошибка: " + (result.message || "Unknown error"));
+            console.log(response.message)
         }
     } catch (error) {
-        
+        console.log("1")
+        console.log(result.message)
     }
 
 

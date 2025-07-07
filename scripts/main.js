@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
+    LoadData();
     // Мобильное меню
     const mobileMenuToggle = document.getElementById('mobileMenuToggle');
     const mainNav = document.getElementById('mainNav');
@@ -14,6 +15,72 @@ document.addEventListener('DOMContentLoaded', function() {
             icon.classList.add('fa-bars');
         }
     });
+
+
+
+    // Auth Check
+
+    async function LoadData() {
+    
+        const response = await fetch('http://192.168.0.103:5001/api/user/usershow', {
+            method: 'GET',
+            credentials: 'include',
+            headers: {
+                'Accept': 'application/json'
+            }
+        });
+
+        
+        if (response.status === 401) {
+            localStorage.removeItem('authToken');
+            return;
+        }
+
+        if (response.ok) {
+            const data = await response.json();
+        updateProfileUI(data);
+        }
+
+        
+    
+}
+
+function updateProfileUI(data) {
+    console.log('Получены данные профиля:', data); // Для отладки
+    
+    // Находим элементы в DOM
+    const authButton = document.getElementById('auth-button'); // Кнопка авторизации
+    const profileContainer = document.querySelector('.profile-container'); // Контейнер для профиля
+    const usernameEl = document.querySelector('.profile-username');
+    const emailEl = document.querySelector('.profile-email');
+    const avatarEl = document.querySelector('.profile-avatar');
+    
+    // Проверяем, есть ли данные пользователя
+    if (!data || (!data.userName && !data.username && !data.user?.name)) {
+        console.log('Данные пользователя отсутствуют или пользователь не авторизован');
+        // Показываем кнопку авторизации и скрываем профиль, если он был показан
+        if (authButton) authButton.style.display = 'block';
+        if (profileContainer) profileContainer.style.display = 'none';
+        return;
+    }
+    
+    // Нормализуем данные
+    const username = data?.userName || data?.username || data?.user?.name || 'Гость';
+    const email = data?.Email || data?.email || data?.user?.email || 'Не указан';
+    const avatarUrl = data?.avatar || data?.user?.avatar || '/img/default-avatar.jpg';
+    
+    // Скрываем кнопку авторизации
+    if (authButton) authButton.style.display = 'none';
+    
+    // Обновляем профиль пользователя
+    if (usernameEl) usernameEl.textContent = username;
+    
+    if (avatarEl) avatarEl.src = avatarUrl;
+    if (avatarEl) avatarEl.alt = `Аватар ${username}`;
+    
+    // Показываем контейнер профиля
+    if (profileContainer) profileContainer.style.display = 'flex'; // или 'block', в зависимости от вашей вёрстки
+}
     
     // Модальное окно авторизации
     const authModal = document.getElementById('authModal');
@@ -84,13 +151,13 @@ document.addEventListener('DOMContentLoaded', function() {
             } 
             else {
                 
-            showAlert("Ошибка: " + (result.message || "Unknown error"));
+            showAlert("Внутренняя ошибка ", "warning");
         
                 window.location.href = "/Profile.html";
             }
         } else {
             console.error('Login failed:', data.Message || 'Unknown error');
-             showAlert("Ошибка: " + (result.message || "Unknown error"));
+             showAlert("Ошибка Авторизации . Попробуйте позже ");
         }
     } catch (error) {
         
@@ -103,14 +170,14 @@ document.addEventListener('DOMContentLoaded', function() {
     const alertMessage = alert.querySelector('.cyber-alert-message');
     const alertClose = alert.querySelector('.cyber-alert-close');
     
-    // Set message and type
+    
     alertMessage.innerHTML = message;
     alert.className = 'cyber-alert ' + type;
     
-    // Show alert
+    
     alert.classList.add('active');
     
-    // Close button handler
+    
     alertClose.onclick = () => {
         alert.classList.remove('active');
         alert.classList.add('hiding');
@@ -119,7 +186,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 500);
     };
     
-    // Auto-hide after duration
+    
     if (duration > 0) {
         setTimeout(() => {
             if (alert.classList.contains('active')) {

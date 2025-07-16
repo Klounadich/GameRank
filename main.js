@@ -150,21 +150,12 @@ function updateProfileUI(data) {
          
 
         if (response.ok) {
+            showAlert(data.Message)
+            window.location.href="/Profile.html"
             
-            if (result.RedirectUrl) {
-                
-                showAlert('Вы авторизованы!', 'success');
-                window.location.href = "/Profile.html";
-            } 
-            else {
-                
-            showAlert("Внутренняя ошибка ", "warning");
-        
-                window.location.href = "/Profile.html";
-            }
         } else {
-            console.error('Login failed:', data.Message || 'Unknown error');
-             showAlert("Ошибка Авторизации . Попробуйте позже ");
+            console.error('Login failed:', data.Message || 'Unknown error' || data.Error);
+             showAlert(data.Message || data.Error);
         }
     } catch (error) {
         

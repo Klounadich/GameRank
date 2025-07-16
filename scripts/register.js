@@ -7,11 +7,14 @@ document.getElementById("registerForm").addEventListener("submit", async (e) => 
         email: document.getElementById("email").value,
         password: document.getElementById("password").value
     };
-    returnpass= document.getElementById("confirmPassword")
+    const passwords = document.getElementById("password").value;
+    const returnpass= document.getElementById("confirmPassword").value;
 
     try {
-        if (password!=returnpass){
+        console.log("Пароли:", passwords, returnpass);
+        if (passwords!==returnpass){
             showAlert("Ошибка: Пароли не совпадают" , 'error');
+            return;
             
         }
         const response = await fetch("http://192.168.0.103:5001/api/auth/register", {

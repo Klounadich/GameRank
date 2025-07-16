@@ -46,19 +46,21 @@ document.addEventListener('DOMContentLoaded', function() {
 }
 
 function updateProfileUI(data) {
-    console.log('Получены данные профиля:', data); // Для отладки
+    console.log('Получены данные профиля:', data);
     
     // Находим элементы в DOM
-    const authButton = document.getElementById('auth-button'); // Кнопка авторизации
-    const profileContainer = document.querySelector('.profile-container'); // Контейнер для профиля
+    const authButton = document.getElementById('auth-button');
+    const profileContainer = document.querySelector('.profile-container');
     const usernameEl = document.querySelector('.profile-username');
     const emailEl = document.querySelector('.profile-email');
     const avatarEl = document.querySelector('.profile-avatar');
     
-    // Проверяем, есть ли данные пользователя
-    if (!data || (!data.userName && !data.username && !data.user?.name)) {
-        console.log('Данные пользователя отсутствуют или пользователь не авторизован');
-        // Показываем кнопку авторизации и скрываем профиль, если он был показан
+    // Проверяем данные пользователя
+    const hasUserData = data && (data.userName || data.username || data.user?.name);
+    
+    if (!hasUserData) {
+        console.log('Пользователь не авторизован');
+        // Показываем кнопку, скрываем профиль
         if (authButton) authButton.style.display = 'block';
         if (profileContainer) profileContainer.style.display = 'none';
         return;
@@ -69,17 +71,22 @@ function updateProfileUI(data) {
     const email = data?.Email || data?.email || data?.user?.email || 'Не указан';
     const avatarUrl = data?.avatar || data?.user?.avatar || '/img/default-avatar.jpg';
     
-    // Скрываем кнопку авторизации
+    // Обновляем UI
     if (authButton) authButton.style.display = 'none';
+    if (profileContainer) profileContainer.style.display = 'flex';
     
-    // Обновляем профиль пользователя
     if (usernameEl) usernameEl.textContent = username;
+    if (emailEl) emailEl.textContent = email;
     
-    if (avatarEl) avatarEl.src = avatarUrl;
-    if (avatarEl) avatarEl.alt = `Аватар ${username}`;
-    
-    // Показываем контейнер профиля
-    if (profileContainer) profileContainer.style.display = 'flex'; // или 'block', в зависимости от вашей вёрстки
+    if (avatarEl) {
+        avatarEl.src = avatarUrl;
+        avatarEl.alt = `Аватар ${username}`;
+        // Устанавливаем фиксированный размер для аватарки
+        avatarEl.style.width = '70px';
+        avatarEl.style.height = '70px';
+        avatarEl.style.borderRadius = '50%';
+        avatarEl.style.objectFit = 'cover';
+    }
 }
     
     // Модальное окно авторизации
@@ -143,21 +150,13 @@ function updateProfileUI(data) {
          
 
         if (response.ok) {
+            showAlert(data.Message)
+            window.location.href="/Profile.html"
             
-            if (result.RedirectUrl) {
-                
-                showAlert('Вы авторизованы!', 'success');
-                window.location.href = "/Profile.html";
-            } 
-            else {
-                
-            showAlert("Внутренняя ошибка ", "warning");
-        
-                window.location.href = "/Profile.html";
-            }
         } else {
-            console.error('Login failed:', data.Message || 'Unknown error');
-             showAlert("Ошибка Авторизации . Попробуйте позже ");
+            console.log(result)
+            console.error('Login failed:', result.Message || 'Unknown error' || result);
+             showAlert(data.Message || result);
         }
     } catch (error) {
         

@@ -30,6 +30,8 @@
 .profile-avatar {
     border-radius: 50%;
     object-fit: cover;
+    width: 70px;
+    height: 70px;
 }
 
 .profile-info {
@@ -104,6 +106,107 @@
     margin-bottom: 2rem;
     padding-bottom: 1rem;
     border-bottom: 1px solid var(--gray);
+}
+/* Стили для хедера */
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.main-nav {
+    display: flex;
+    align-items: center;
+}
+
+.nav-links {
+    display: flex;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.nav-links li {
+    margin-left: 20px;
+}
+
+.nav-right {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.profile-container {
+    display: none;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: inherit;
+}
+
+.profile-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+
+/* Добавьте в ваш style.css */
+.profile-page-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  width: 100%;
+}
+
+.profile-header {
+  display: flex;
+  gap: 30px;
+  margin-bottom: 40px;
+  align-items: flex-start;
+}
+
+.profile-avatar {
+  position: relative;
+  width: 200px; /* Увеличили размер */
+  height: 200px; /* Увеличили размер */
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+  border: 3px solid #4a3aff; /* Добавили обводку */
+  box-shadow: 0 0 20px rgba(74, 58, 255, 0.5); /* Добавили свечение */
+}
+
+.profile-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profile-info {
+  flex: 1;
+}
+
+/* Исправьте медиазапросы для мобильных */
+@media (max-width: 768px) {
+  .profile-header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+}
+.profile-username {
+    font-weight: bold;
+    color: #fff;
+}
+
+#auth-button {
+    display: flex;
+    align-items: center;
+    gap: 5px;
 }
 
 .settings-header h2 {
@@ -1197,6 +1300,7 @@ body {
     transition: all 0.3s ease;
     display: inline-flex;
     align-items: center;
+    width: 200px;
     gap: 0.5rem;
 }
 

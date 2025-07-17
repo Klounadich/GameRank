@@ -20,7 +20,67 @@
     font-family: 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', sans-serif;
 }
 
+/* Admin Badge & Button Styles */
+.profile-admin-info {
+    display: none;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+}
 
+.admin-badge {
+    background: linear-gradient(135deg, rgba(110, 0, 255, 0.2), rgba(0, 240, 255, 0.2));
+    color: var(--secondary);
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    display: none;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid var(--primary);
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.admin-badge i {
+    color: var(--primary);
+}
+
+.admin-panel-btn {
+    padding: 0.6rem 1.2rem;
+    background-color: rgba(255, 0, 68, 0.1);
+    color: var(--danger);
+    border: 2px solid var(--danger);
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: none;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+}
+
+.admin-panel-btn:hover {
+    background-color: rgba(255, 0, 68, 0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 0 20px rgba(255, 0, 68, 0.3);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .profile-admin-info {
+        justify-content: center;
+        margin-top: 10px;
+    }
+    
+    .admin-badge, .admin-panel-btn {
+        font-size: 0.85rem;
+    }
+}
 .profile-container {
     display: flex;
     align-items: center;

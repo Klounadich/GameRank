@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameRank - Админ панель</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/admin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="icon" href="/img/Logo.png" type="image/png">
+</head>
+<body>
+    <div class="cyberpunk-overlay"></div>
+    
+    <header class="cyber-header">
+        <div class="header-container">
+            <div class="logo">
+                <a href="/index.html"><span class="logo-icon"><img src="/img/Logo.png" width="100px"></span>
+                <span class="logo-text">GameRank</span></a>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="/admin" class="nav-link active"><i class="fas fa-shield-alt"></i> Админ-панель</a></li>
+                    <li><a href="/" class="nav-link"><i class="fas fa-home"></i> На главную</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="admin-main">
+        <div class="admin-container">
+            <h1 class="admin-title"><i class="fas fa-shield-alt"></i> Административная панель</h1>
+            
+            <div class="admin-tabs">
+                <button class="admin-tab active" data-tab="users"><i class="fas fa-users"></i> Пользователи</button>
+                <button class="admin-tab" data-tab="ban"><i class="fas fa-ban"></i> Бан-лист</button>
+                <button class="admin-tab" data-tab="reports"><i class="fas fa-flag"></i> Жалобы <span class="badge">12</span></button>
+                <button class="admin-tab" data-tab="suspicious"><i class="fas fa-user-secret"></i> Подозрительные</button>
+                <button class="admin-tab" data-tab="logs"><i class="fas fa-clipboard-list"></i> Логи системы</button>
+                <button class="admin-tab" data-tab="roles"><i class="fas fa-user-tag"></i> Роли</button>
+            </div>
+            
+            <div class="admin-content">
+                <!-- Вкладка Пользователи -->
+                <div class="tab-content active" id="users-tab">
+                    <div class="admin-search">
+                        <input type="text" placeholder="Поиск пользователей...">
+                        <button><i class="fas fa-search"></i></button>
+                    </div>
+                    
+                    <div class="admin-table-container">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Аватар</th>
+                                    <th>Имя пользователя</th>
+                                    <th>Email</th>
+                                    <th>Роль</th>
+                                    <th>Дата регистрации</th>
+                                    <th>Действия</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1542</td>
+                                    <td><img src="/img/default-avatar.jpg" class="user-avatar"></td>
+                                    <td>CyberGamer</td>
+                                    <td>cyber@gamer.com</td>
+                                    <td><span class="role-user">Пользователь</span></td>
+                                    <td>12.05.2023</td>
+                                    <td>
+                                        <button class="btn-action btn-edit"><i class="fas fa-user-edit"></i></button>
+                                        <button class="btn-action btn-ban"><i class="fas fa-ban"></i></button>
+                                    </td>
+                                </tr>
+                                <!-- Другие строки -->
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="admin-pagination">
+                        <button class="btn-pagination"><i class="fas fa-chevron-left"></i></button>
+                        <span class="page-active">1</span>
+                        <button class="btn-pagination">2</button>
+                        <button class="btn-pagination">3</button>
+                        <button class="btn-pagination"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+                
+                <!-- Вкладка Бан-лист -->
+                <div class="tab-content" id="ban-tab">
+                    <h2><i class="fas fa-ban"></i> Забаненные пользователи</h2>
+                    <div class="admin-table-container">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Имя пользователя</th>
+                                    <th>Причина бана</th>
+                                    <th>Забанил</th>
+                                    <th>Дата бана</th>
+                                    <th>Срок</th>
+                                    <th>Действия</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>2045</td>
+                                    <td>ToxicPlayer</td>
+                                    <td>Оскорбления</td>
+                                    <td>Admin</td>
+                                    <td>01.06.2023</td>
+                                    <td>Перманентно</td>
+                                    <td>
+                                        <button class="btn-action btn-unban"><i class="fas fa-unlock"></i> Разбанить</button>
+                                    </td>
+                                </tr>
+                                <!-- Другие строки -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Вкладка Жалобы -->
+                <div class="tab-content" id="reports-tab">
+                    <h2><i class="fas fa-flag"></i> Обработка жалоб <span class="badge">12</span></h2>
+                    
+                    <div class="report-cards">
+                        <div class="report-card">
+                            <div class="report-header">
+                                <span class="report-id">#REP-4582</span>
+                                <span class="report-type report-type-toxic">Токсичность</span>
+                                <span class="report-date">Сегодня, 14:30</span>
+                            </div>
+                            <div class="report-content">
+                                <div class="report-user">
+                                    <img src="/img/default-avatar.jpg" class="user-avatar">
+                                    <div>
+                                        <strong>Жалоба от:</strong> User123
+                                        <div class="report-reason">"Оскорбляет других игроков в комментариях"</div>
+                                    </div>
+                                </div>
+                                <div class="report-actions">
+                                    <button class="btn-action btn-warn"><i class="fas fa-exclamation-triangle"></i> Предупредить</button>
+                                    <button class="btn-action btn-ban-sm"><i class="fas fa-ban"></i> Забанить</button>
+                                    <button class="btn-action btn-dismiss"><i class="fas fa-times"></i> Отклонить</button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Другие карточки жалоб -->
+                    </div>
+                </div>
+                
+                <!-- Вкладка Подозрительные -->
+                <div class="tab-content" id="suspicious-tab">
+                    <h2><i class="fas fa-user-secret"></i> Подозрительные аккаунты</h2>
+                    <div class="suspicious-filters">
+                        <select>
+                            <option>Все подозрения</option>
+                            <option>Множественные аккаунты</option>
+                            <option>Подозрительная активность</option>
+                            <option>Обход бана</option>
+                        </select>
+                        <button class="btn-refresh"><i class="fas fa-sync-alt"></i></button>
+                    </div>
+                    
+                    <div class="suspicious-list">
+                        <div class="suspicious-item">
+                            <div class="suspicious-info">
+                                <img src="/img/default-avatar.jpg" class="user-avatar">
+                                <div>
+                                    <strong>UserMulti1</strong>
+                                    <div class="suspicious-reason">Попытка BruteForce</div>
+                                    <div class="suspicious-ip">IP: 192.168.1.1</div>
+                                </div>
+                            </div>
+                            <div class="suspicious-actions">
+                                <button class="btn-action btn-ban-sm"><i class="fas fa-ban"></i></button>
+                                <button class="btn-action btn-watch"><i class="fas fa-eye"></i></button>
+                                <button class="btn-action btn-ignore"><i class="fas fa-times"></i></button>
+                            </div>
+                        </div>
+                        <!-- Другие подозрительные аккаунты -->
+                    </div>
+                </div>
+                
+                <!-- Вкладка Логи -->
+                <div class="tab-content" id="logs-tab">
+                    <h2><i class="fas fa-clipboard-list"></i> Логи системы</h2>
+                    <div class="log-filters">
+                        <select>
+                            <option>Все логи</option>
+                            <option>Авторизации</option>
+                            <option>Действия пользователей</option>
+                            <option>Ошибки</option>
+                        </select>
+                        <input type="date" class="log-date">
+                        <button class="btn-download"><i class="fas fa-download"></i> Экспорт</button>
+                    </div>
+                    
+                    <div class="log-container">
+                        <div class="log-entry log-warning">
+                            <div class="log-time">[01.06.2023 14:45:32]</div>
+                            <div class="log-message">Пользователь ToxicPlayer забанен (Admin, причина: Оскорбления)</div>
+                        </div>
+                        <div class="log-entry log-error">
+                            <div class="log-time">[01.06.2023 14:40:11]</div>
+                            <div class="log-message">Ошибка базы данных при обновлении профиля пользователя ID:1542</div>
+                        </div>
+                        <!-- Другие логи -->
+                    </div>
+                </div>
+                
+                <!-- Вкладка Роли -->
+                <div class="tab-content" id="roles-tab">
+                    <h2><i class="fas fa-user-tag"></i> Управление ролями</h2>
+                    
+                    <div class="role-management">
+                        <div class="role-form">
+                            <h3><i class="fas fa-plus-circle"></i> Назначить роль</h3>
+                            <div class="form-group">
+                                <label>Пользователь:</label>
+                                <input type="text" placeholder="Введите ID или имя">
+                            </div>
+                            <div class="form-group">
+                                <label>Роль:</label>
+                                <select>
+                                    
+                                    <option>Администратор</option>
+                                    <option>Редактор</option>
+                                    <option>Пользователь</option>
+                                </select>
+                            </div>
+                            <button class="btn-save"><i class="fas fa-save"></i> Сохранить</button>
+                        </div>
+                        
+                        <div class="role-list">
+                            <h3><i class="fas fa-list"></i> Текущие назначения</h3>
+                            <table class="admin-table">
+                                <thead>
+                                    <tr>
+                                        <th>Пользователь</th>
+                                        <th>Роль</th>
+                                        <th>Назначил</th>
+                                        <th>Дата</th>
+                                        <th>Действия</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>ModeratorUser</td>
+                                        <td><span class="role-moderator">Администратор</span></td>
+                                        <td>SuperAdmin</td>
+                                        <td>15.05.2023</td>
+                                        <td>
+                                            <button class="btn-action btn-edit"><i class="fas fa-edit"></i></button>
+                                            <button class="btn-action btn-remove"><i class="fas fa-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                    <!-- Другие роли -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="/scripts/admin.js"></script>
+</body>
+</html>

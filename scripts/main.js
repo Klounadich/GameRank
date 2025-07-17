@@ -46,8 +46,15 @@ document.addEventListener('DOMContentLoaded', function() {
 }
 
 function updateProfileUI(data) {
-    console.log('Получены данные профиля:', data);
     
+    if(data.role === "Admin") {
+        
+        
+        const badge =document.querySelector(".admin-badge");
+        
+        badge.style.display="flex"
+       
+    }
     // Находим элементы в DOM
     const authButton = document.getElementById('auth-button');
     const profileContainer = document.querySelector('.profile-container');

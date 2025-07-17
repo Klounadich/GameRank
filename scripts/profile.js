@@ -1,5 +1,19 @@
 document.addEventListener('DOMContentLoaded', function() {
     LoadProfile();
+    const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+    const mainNav = document.getElementById('mainNav');
+    
+    mobileMenuToggle.addEventListener('click', function() {
+        mainNav.classList.toggle('active');
+        const icon = this.querySelector('i');
+        if (mainNav.classList.contains('active')) {
+            icon.classList.remove('fa-bars');
+            icon.classList.add('fa-times');
+        } else {
+            icon.classList.remove('fa-times');
+            icon.classList.add('fa-bars');
+        }
+    });
     
     const editMenuToogle = document.getElementById('profileEditModal');
     const ProfileEditButton = document.querySelector('.edit-profile');
@@ -108,6 +122,9 @@ function updateProfileUI(data) {
         panel.style.display="flex"
         status.style.display="flex"
         badge.style.display="flex"
+        panel.addEventListener('click', ()=> {
+            window.location.href = '/admin.html';
+        })
     }
     
     // Проверяем, найдены ли элементы

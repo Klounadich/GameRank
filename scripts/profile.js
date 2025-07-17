@@ -100,6 +100,30 @@ function updateProfileUI(data) {
     
     const usernameEl = document.querySelector('.profile-username');
     const emailEl = document.querySelector('.profile-email');
+
+    if(data.Role === "Admin") {
+        console.log("Вошёл админ")
+         const adminButton = document.createElement('button');
+    adminButton.textContent = 'Админ-панель';
+    adminButton.style.position = 'fixed';
+    adminButton.style.bottom = '20px';
+    adminButton.style.right = '20px';
+    adminButton.style.padding = '10px 15px';
+    adminButton.style.backgroundColor = '#4CAF50';
+    adminButton.style.color = 'white';
+    adminButton.style.border = 'none';
+    adminButton.style.borderRadius = '4px';
+    adminButton.style.cursor = 'pointer';
+    adminButton.style.zIndex = '1000';
+    
+    // Добавляем обработчик клика
+    adminButton.addEventListener('click', () => {
+        window.location.href = '/admin'; // или ваш URL админ-панели
+    });
+    
+    // Добавляем кнопку на страницу
+    document.body.appendChild(adminButton)
+    }
     
     // Проверяем, найдены ли элементы
     if (!usernameEl || !emailEl) {

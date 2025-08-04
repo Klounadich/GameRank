@@ -115,7 +115,7 @@ function updateProfileUI(data) {
     const usernameEl = document.querySelector('.profile-username');
     const emailEl = document.querySelector('.profile-email');
 
-    if(data.role === "Admin") {
+    if(data.role && data.role.includes('Admin')) {
         const panel=document.querySelector(".admin-panel-btn")
         const status = document.querySelector(".profile-admin-info");
         const badge =document.querySelector(".admin-badge");

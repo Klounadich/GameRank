@@ -73,4 +73,96 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     }
+
+    // ФЕТЧИ АДМИН ПАНЕЛИ 
+    // Получаем элементы DOM
+document.addEventListener('DOMContentLoaded', function() {
+    // Получаем элементы DOM
+    const searchInput = document.getElementById('searchuser');
+    const searchBtn = document.getElementById('searchbtn');
+    const usersTableBody = document.querySelector('#users-tab .admin-table tbody');
+
+    // Функция для отправки данных
+    async function sendSearchData() {
+        const searchValue = searchInput.value.trim();
+        
+        if (searchValue) {
+            try {
+                // Здесь должен быть ваш реальный API endpoint
+                const url = 'http://192.168.0.103:5001/api/admin/get'; // Пример URL
+                
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ query: searchValue })
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                
+                const data = await response.json();
+                console.log('Success:', data);
+                updateUsersTable(data);
+                
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Произошла ошибка при поиске пользователя');
+            }
+        } else {
+            alert('Пожалуйста, введите имя пользователя или email для поиска');
+        }
+    }
+
+    // Функция для обновления таблицы пользователей
+    function updateUsersTable(users) {
+        // Очищаем таблицу, но оставляем заголовок
+        usersTableBody.innerHTML = '';
+        
+        // Если пользователи не найдены
+        if (users.length === 0) {
+            const row = document.createElement('tr');
+            row.innerHTML = '<td colspan="6" class="text-center">Пользователи не найдены</td>';
+            usersTableBody.appendChild(row);
+            return;
+        }
+        
+        // Добавляем найденных пользователей в таблицу
+        users.forEach(user => {
+            const row = document.createElement('tr');
+            
+            // Определяем класс для роли
+            let roleClass = 'user';
+            if (user.role === 'Администратор') roleClass = 'admin';
+            
+            
+            row.innerHTML = `
+                <td><img src="${user.avatar || '/img/default-avatar.jpg'}" class="user-avatar"></td>
+                <td>${user.username || 'N/A'}</td>
+                <td>${user.email || 'N/A'}</td>
+                <td><span class="${roleClass}">${user.role || 'Пользователь'}</span></td>
+                <td>${user.ip || 'N/A'}</td>
+                <td>
+                    <button class="btn-action btn-edit"><i class="fas fa-user-edit"></i></button>
+                    <button class="btn-action btn-ban"><i class="fas fa-ban"></i></button>
+                </td>
+            `;
+            
+            usersTableBody.appendChild(row);
+        });
+    }
+
+    // Добавляем обработчик события на кнопку
+    searchBtn.addEventListener('click', sendSearchData);
+    
+    // Также можно добавить обработчик нажатия Enter в поле ввода
+    searchInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            sendSearchData();
+        }
+    });
+});
+
 });

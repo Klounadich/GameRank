@@ -34,7 +34,7 @@
             <div class="admin-tabs">
                 <button class="admin-tab active" data-tab="users"><i class="fas fa-users"></i> Пользователи</button>
                 <button class="admin-tab" data-tab="ban"><i class="fas fa-ban"></i> Бан-лист</button>
-                <button class="admin-tab" data-tab="reports"><i class="fas fa-flag"></i> Жалобы <span class="badge">12</span></button>
+                
                 <button class="admin-tab" data-tab="suspicious"><i class="fas fa-user-secret"></i> Подозрительные</button>
                 <button class="admin-tab" data-tab="logs"><i class="fas fa-clipboard-list"></i> Логи системы</button>
                 <button class="admin-tab" data-tab="roles"><i class="fas fa-user-tag"></i> Роли</button>
@@ -58,21 +58,14 @@
                                     <th>Email</th>
                                     <th>Роль</th>
                                     <th>IP</th>
+                                    <th>Статус</th>
                                     <th>Действия</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
                                     
-                                    <td><img src="/img/default-avatar.jpg" class="user-avatar"></td>
-                                    <td>CyberGamer</td>
-                                    <td>cyber@gamer.com</td>
-                                    <td><span class="role-user">Пользователь</span></td>
                                     
-                                    <td>
-                                        <button class="btn-action btn-edit"><i class="fas fa-user-edit"></i></button>
-                                        <button class="btn-action btn-ban"><i class="fas fa-ban"></i></button>
-                                    </td>
                                 </tr>
                                 <!-- Другие строки -->
                             </tbody>
@@ -95,25 +88,25 @@
                         <table class="admin-table">
                             <thead>
                                 <tr>
-                                    <th>ID</th>
+                                    
                                     <th>Имя пользователя</th>
-                                    <th>Причина бана</th>
+                                    
                                     <th>Забанил</th>
-                                    <th>Дата бана</th>
-                                    <th>Срок</th>
+                                    
+                                    
                                     <th>Действия</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>2045</td>
+                                    
                                     <td>ToxicPlayer</td>
-                                    <td>Оскорбления</td>
-                                    <td>Admin</td>
-                                    <td>01.06.2023</td>
-                                    <td>Перманентно</td>
+                                    
+                                    <td>Скоро</td>
+                                    
+                                    
                                     <td>
-                                        <button class="btn-action btn-unban"><i class="fas fa-unlock"></i> Разбанить</button>
+                                        <button class="btn-action btn-unban" id="btn-unban"><i class="fas fa-unlock"></i> Разбанить</button>
                                     </td>
                                 </tr>
                                 <!-- Другие строки -->
@@ -123,34 +116,7 @@
                 </div>
                 
                 <!-- Вкладка Жалобы -->
-                <div class="tab-content" id="reports-tab">
-                    <h2><i class="fas fa-flag"></i> Обработка жалоб <span class="badge">12</span></h2>
-                    
-                    <div class="report-cards">
-                        <div class="report-card">
-                            <div class="report-header">
-                                <span class="report-id">#REP-4582</span>
-                                <span class="report-type report-type-toxic">Токсичность</span>
-                                <span class="report-date">Сегодня, 14:30</span>
-                            </div>
-                            <div class="report-content">
-                                <div class="report-user">
-                                    <img src="/img/default-avatar.jpg" class="user-avatar">
-                                    <div>
-                                        <strong>Жалоба от:</strong> User123
-                                        <div class="report-reason">"Оскорбляет других игроков в комментариях"</div>
-                                    </div>
-                                </div>
-                                <div class="report-actions">
-                                    <button class="btn-action btn-warn"><i class="fas fa-exclamation-triangle"></i> Предупредить</button>
-                                    <button class="btn-action btn-ban-sm"><i class="fas fa-ban"></i> Забанить</button>
-                                    <button class="btn-action btn-dismiss"><i class="fas fa-times"></i> Отклонить</button>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Другие карточки жалоб -->
-                    </div>
-                </div>
+                
                 
                 <!-- Вкладка Подозрительные -->
                 <div class="tab-content" id="suspicious-tab">
@@ -227,9 +193,9 @@
                                 <label>Роль:</label>
                                 <select>
                                     
-                                    <option>Администратор</option>
+                                    <option>Admin</option>
                                     <option>Редактор</option>
-                                    <option>Пользователь</option>
+                                    <option>User</option>
                                 </select>
                             </div>
                             <button class="btn-save"><i class="fas fa-save"></i> Сохранить</button>
@@ -269,5 +235,8 @@
     </main>
 
     <script src="/scripts/admin.js"></script>
+    <script src="/scripts/banList.js"></script>
+    <script src="/scripts/suspect.js"></script>
+    <script src="/scripts/roles.js"></script>
 </body>
 </html>

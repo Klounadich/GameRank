@@ -49,10 +49,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 const row = document.createElement('tr');
                 
                 row.innerHTML = `
-                    <td>${user.id || 'N/A'}</td>
+                    <td>${user.Username || 'N/A'}</td>
                     <td>${user.ipAdress || 'N/A'}</td>
+                    <td>SuperAdmin</td>
                     <td>
-                        <button class="btn-action btn-unban" data-id="${user.id}">
+                        <button class="btn-action btn-unban" data-id="${user.Username}">
                             <i class="fas fa-unlock"></i> Разбанить
                         </button>
                     </td>
@@ -63,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Добавляем обработчик для кнопки разбана
                 const unbanBtn = row.querySelector('.btn-unban');
                 unbanBtn.addEventListener('click', function() {
-                    unbanUser(this.dataset.id);
+                    unbanUser(user.Username);
                 });
             });
             
@@ -82,7 +83,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         try {
-            const url = 'http://192.168.0.103:5002/api/admin/unban';
+            const url = 'http://192.168.0.103:5002/api/admin/unban-user';
             
             const response = await fetch(url, {
                 method: 'POST',
@@ -90,7 +91,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    id: userId
+                    Username: userId
                 })
             });
             

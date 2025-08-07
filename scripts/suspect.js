@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="suspicious-info">
                         <img src="/img/default-avatar.jpg" class="user-avatar">
                         <div>
-                            <strong>${account.id || 'N/A'}</strong>
+                            <strong>${account.username || 'N/A'}</strong>
                             <div class="suspicious-reason">Причина: ${account.cause || 'Подозрительная активность'}</div>
                             <div class="suspicious-ip">IP: ${account.ipAdress || 'N/A'}</div>
                         </div>
@@ -72,9 +72,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 suspiciousList.appendChild(item);
                 
                 // Добавляем обработчики для кнопок
-                item.querySelector('.btn-ban-sm').addEventListener('click', () => banAccount(account.id));
-                item.querySelector('.btn-watch').addEventListener('click', () => watchAccount(account.id));
-                item.querySelector('.btn-ignore').addEventListener('click', () => ignoreAccount(account.id));
+                item.querySelector('.btn-ban-sm').addEventListener('click', () => banUser(account.username));
+                item.querySelector('.btn-watch').addEventListener('click', () => watchAccount(account.ipAdress));
+                item.querySelector('.btn-ignore').addEventListener('click', () => ignoreAccount(account.ipAdress));
             });
             
         } catch (error) {
@@ -84,28 +84,40 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Функция для бана аккаунта
-    async function banAccount(accountId) {
-        if (!confirm('Забанить этот аккаунт?')) return;
+    async function banUser(username) {
+        if (username === "Guest") {
+            alert('Пользователь не зарегистрирован . Бан по IP в данный момент не работает .');
+            return;
+        } 
+        
+        if (!confirm(`Вы уверены, что хотите забанить пользователя ${username}?`)) {
+            return;
+        }
         
         try {
-            const url = 'http://192.168.0.103:5002/api/admin/ban-account';
-            const response = await fetch(url, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ accountId })
+            const response = await fetch("http://192.168.0.103:5002/api/admin/ban-user", {
+            method: "POST",
+            credentials:'include',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(username),
             });
             
-            if (!response.ok) throw new Error('Ban failed');
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
             
             const result = await response.json();
-            alert('Аккаунт забанен');
-            loadSuspiciousAccounts(); // Обновляем список
+            console.log('Ban result:', result);
+            alert(`Пользователь ${username} успешно забанен`);
+            
+            // Обновляем данные после бана
+            sendSearchData();
             
         } catch (error) {
             console.error('Ban error:', error);
-            alert('Ошибка при бане аккаунта');
+            alert('Произошла ошибка при попытке бана пользователя');
         }
     }
     
@@ -133,16 +145,17 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Функция для игнорирования
     async function ignoreAccount(accountId) {
+        console.log(accountId);
         if (!confirm('Игнорировать это предупреждение?')) return;
         
         try {
-            const url = 'http://192.168.0.103:5002/api/admin/ignore-account';
+            const url = 'http://192.168.0.103:5002/api/admin/ignore-suspect';
             const response = await fetch(url, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ accountId })
+                body: JSON.stringify( accountId )
             });
             
             if (!response.ok) throw new Error('Ignore failed');

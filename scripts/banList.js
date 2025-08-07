@@ -49,11 +49,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 const row = document.createElement('tr');
                 
                 row.innerHTML = `
-                    <td>${user.Username || 'N/A'}</td>
+                    <td>${user.userName || 'N/A'}</td>
                     <td>${user.ipAdress || 'N/A'}</td>
                     <td>SuperAdmin</td>
                     <td>
-                        <button class="btn-action btn-unban" data-id="${user.Username}">
+                        <button class="btn-action btn-unban" data-id="${user.userName}">
                             <i class="fas fa-unlock"></i> Разбанить
                         </button>
                     </td>
@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Добавляем обработчик для кнопки разбана
                 const unbanBtn = row.querySelector('.btn-unban');
                 unbanBtn.addEventListener('click', function() {
-                    unbanUser(user.Username);
+                    unbanUser(user.userName);
                 });
             });
             
@@ -75,40 +75,37 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Функция для разбана пользователя
-    async function unbanUser(userId) {
-        if (!userId) return;
-        
-        if (!confirm(`Вы уверены, что хотите разбанить пользователя с ID ${userId}?`)) {
-            return;
-        }
-        
-        try {
-            const url = 'http://192.168.0.103:5002/api/admin/unban-user';
-            
-            const response = await fetch(url, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    Username: userId
-                })
-            });
-            
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            
-            const result = await response.json();
-            console.log('Unban result:', result);
-            alert(`Пользователь с ID ${userId} успешно разбанен`);
-            
-            // Обновляем список забаненных пользователей
-            loadBannedUsers();
-            
-        } catch (error) {
-            console.error('Unban error:', error);
-            alert('Произошла ошибка при попытке разбана пользователя');
-        }
+    async function unbanUser(username) {
+    if (!username) return;
+    
+    if (!confirm(`Вы уверены, что хотите разбанить этого пользователя?`)) {
+        return;
     }
+    
+    try {
+        const response = await fetch("http://192.168.0.103:5002/api/admin/unban-user", {
+            method: "POST",
+            credentials: 'include',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify( username ),
+        });
+        
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        
+        const result = await response.json();
+        console.log('Unban result:', result);
+        alert('Пользователь успешно разбанен');
+        
+        // Обновляем данные после разбана
+        sendSearchData();
+        
+    } catch (error) {
+        console.error('Unban error:', error);
+        alert('Произошла ошибка при попытке разбана пользователя');
+    }
+}
 });

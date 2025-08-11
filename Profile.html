@@ -6,7 +6,107 @@
     <title>GameRank - Профиль пользователя</title>
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="icon" href="/img/Logo.png"  type="image/png">
+    <link rel="icon" href="/img/Logo.png" type="image/png">
+    <style>
+        /* Стили для блока "О себе" */
+        .profile-info-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+        
+        .profile-main-info {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .profile-side-info {
+            width: 350px;
+        }
+        
+        .profile-bio-section {
+            background-color: rgba(42, 42, 58, 0.7);
+            border-radius: 8px;
+            padding: 1.5rem;
+            border: 1px solid var(--gray);
+        }
+        
+        .profile-bio-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid var(--gray);
+            padding-bottom: 0.5rem;
+        }
+        
+        .profile-bio-title {
+            color: var(--light);
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .profile-bio-content {
+            color: rgba(224, 224, 224, 0.9);
+            line-height: 1.6;
+            white-space: pre-line;
+        }
+        
+        .profile-bio-content.empty {
+            color: rgba(224, 224, 224, 0.6);
+            font-style: italic;
+        }
+        
+        .profile-bio-edit {
+            margin-top: 1rem;
+            display: none;
+        }
+        
+        .profile-bio-edit textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 1rem;
+            background-color: rgba(42, 42, 58, 0.9);
+            border: 1px solid var(--gray);
+            border-radius: 4px;
+            color: var(--light);
+            resize: vertical;
+        }
+        
+        .profile-bio-actions {
+            display: flex;
+            gap: 0.8rem;
+            margin-top: 0.8rem;
+            justify-content: flex-end;
+        }
+        
+        .profile-bio-edit-btn {
+            background: none;
+            border: none;
+            color: var(--secondary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-size: 0.9rem;
+        }
+        
+        .profile-bio-edit-btn:hover {
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 768px) {
+            .profile-info-container {
+                flex-direction: column;
+            }
+            
+            .profile-side-info {
+                width: 100%;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="cyberpunk-overlay"></div>
@@ -28,261 +128,288 @@
                     <li><a href="#" class="nav-link" id="ttt"><i class="fas fa-cog"></i> Настройки</a></li>
                 </ul>
                 <button class="admin-panel-btn">
-            <i class="fas fa-cog"></i> Админ-панель
-        </button>
+                    <i class="fas fa-cog"></i> Админ-панель
+                </button>
             </nav>
         </div>
     </header>
 
-    <main class="main-content ">
+    <main class="main-content">
         <div class="profile-page-container">
-        <section class="profile-header">
-            <div class="profile-avatar">
-                <img src="/img/default-avatar.jpg" alt="Аватар пользователя">
-                <button class="edit-avatar"><i class="fas fa-camera"></i></button>
-            </div>
-            <div class="profile-info">
-                <h1 class="profile-username"></h1>
-                    <div class="profile-admin-info">
-     
-        <span class="admin-badge">
-            <i class="fas fa-shield-alt"></i> Админ
-        </span>
-        
-    
-</div>
-                <p class="profile-email"><i class="fas fa-envelope"></i> </p>
-                <div class="profile-stats">
-                    <div class="stat-item">
-                        <span class="stat-number">24</span>
-                        <span class="stat-label">Тир-листа</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-number">156</span>
-                        <span class="stat-label">Ачивки</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-number">3</span>
-                        <span class="stat-label">Года</span>
-                    </div>
+            <section class="profile-header">
+                <div class="profile-avatar">
+                    <img src="/img/default-avatar.jpg" alt="Аватар пользователя">
+                    <button class="edit-avatar"><i class="fas fa-camera"></i></button>
                 </div>
-                <button class="edit-profile"><i class="fas fa-user-edit"></i> Редактировать профиль</button>
-            </div>
-        </section>
-        <!-- Profile Edit Modal -->
-<div class="profile-edit-modal" id="profileEditModal">
-    <div class="profile-edit-content">
-        <button class="close-edit-modal" id="closeEditModal"><i class="fas fa-times"></i></button>
-        
-        <div class="profile-edit-header">
-            <h2>Редактирование профиля</h2>
-            <p>Обновите информацию о себе</p>
-        </div>
-        
-        <div class="avatar-edit-section">
-            <div class="avatar-preview">
-                <img src="/img/default-avatar.jpg" alt="Аватар пользователя" id="avatarPreview">
-            </div>
-            <button class="avatar-upload-btn" id="avatarUploadBtn">
-                <i class="fas fa-camera"></i> Изменить аватар
-            </button>
-            <input type="file" id="avatarUploadInput" class="avatar-upload-input" accept="image/*">
-        </div>
-        
-        <form class="profile-edit-form" id="profileEditForm">
-            <div class="form-group">
-                <label for="username"><i class="fas fa-user"></i> Имя пользователя</label>
-                <input type="text" id="username" class="form-control" >
-            </div>
-            
-            <div class="form-group">
-                <label for="email"><i class="fas fa-envelope"></i> Email</label>
-                <input type="email" id="email" class="form-control" >
-            </div>
-            
-            <div class="form-group">
-                <label for="bio"><i class="fas fa-info-circle"></i> О себе</label>
-                <textarea id="bio" class="form-control" placeholder="Расскажите немного о себе..."></textarea>
-            </div>
-            
-            <div class="form-actions">
-                <button type="button" class="btn btn-secondary" id="cancelEditBtn">Отмена</button>
-                <button type="submit" class="btn btn-primary" id="updbtn">Сохранить изменения</button>
-            </div>
-        </form>
-    </div>
-</div>
-
-        <section class="profile-sections">
-            <div class="section-tabs">
-                <button class="tab-btn active" data-tab="tierlists">Мои тир-листы</button>
-                <button class="tab-btn" data-tab="achievements">Ачивки</button>
-                <button class="tab-btn" data-tab="activity">Активность</button>
-            </div>
-
-            <div class="tab-content active" id="tierlists">
-                <div class="tierlist-grid">
-                    <div class="tierlist-card">
-                        <div class="tierlist-preview">
-                            <img src="/img/shuters.png" alt="Превью тир-листа">
-                            <div class="tierlist-badge">S+</div>
+                
+                <div class="profile-info-container">
+                    <div class="profile-main-info">
+                        <h1 class="profile-username"></h1>
+                        <div class="profile-admin-info">
+                            <span class="admin-badge">
+                                <i class="fas fa-shield-alt"></i> Админ
+                            </span>
                         </div>
-                        <div class="tierlist-info">
-                            <h3>Лучшие шутеры 2023</h3>
-                            <div class="tierlist-meta">
-                                <span><i class="fas fa-eye"></i> 1.2K</span>
-                                <span><i class="fas fa-comment"></i> 47</span>
-                                <span><i class="fas fa-calendar"></i> 2 дня назад</span>
+                        <p class="profile-email"><i class="fas fa-envelope"></i></p>
+                        
+                        <div class="profile-stats">
+                            <div class="stat-item">
+                                <span class="stat-number">24</span>
+                                <span class="stat-label">Тир-листа</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number">156</span>
+                                <span class="stat-label">Ачивки</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number">3</span>
+                                <span class="stat-label">Года</span>
                             </div>
                         </div>
+                        <button class="edit-profile"><i class="fas fa-user-edit"></i> Редактировать профиль</button>
                     </div>
-
-                    <div class="tierlist-card">
-                        <div class="tierlist-preview">
-                            <img src="/img/rpgs.jpg" alt="Превью тир-листа">
-                            <div class="tierlist-badge">A</div>
-                        </div>
-                        <div class="tierlist-info">
-                            <h3>РПГ всех времен</h3>
-                            <div class="tierlist-meta">
-                                <span><i class="fas fa-eye"></i> 3.4K</span>
-                                <span><i class="fas fa-comment"></i> 128</span>
-                                <span><i class="fas fa-calendar"></i> 1 месяц назад</span>
+                    
+                    <!-- Блок "О себе" в правой части -->
+                    <div class="profile-side-info">
+                        <div class="profile-bio-section">
+                            <div class="profile-bio-header">
+                                <h3 class="profile-bio-title">
+                                    <i class="fas fa-user-circle"></i> О себе
+                                </h3>
                             </div>
-                        </div>
-                    </div>
-
-                    <div class="tierlist-card">
-                        <div class="tierlist-preview">
-                            <img src="/img/ind.jpeg" alt="Превью тир-листа">
-                            <div class="tierlist-badge">S</div>
-                        </div>
-                        <div class="tierlist-info">
-                            <h3>Инди-жемчужины</h3>
-                            <div class="tierlist-meta">
-                                <span><i class="fas fa-eye"></i> 2.1K</span>
-                                <span><i class="fas fa-comment"></i> 89</span>
-                                <span><i class="fas fa-calendar"></i> 3 недели назад</span>
+                            <div class="profile-bio-content">
+                                Пользователь пока не добавил информацию о себе.
+                            </div>
+                            <button class="profile-bio-edit-btn" id="editBioBtn">
+                                <i class="fas fa-pencil-alt"></i> Редактировать
+                            </button>
+                            <div class="profile-bio-edit" id="bioEditSection">
+                                <textarea id="bioTextarea" placeholder="Расскажите о себе..."></textarea>
+                                <div class="profile-bio-actions">
+                                    <button class="btn btn-secondary" id="cancelBioEdit">Отмена</button>
+                                    <button class="btn btn-primary" id="saveBioEdit">Сохранить</button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </section>
 
-            <div class="tab-content" id="achievements">
-                <div class="achievements-grid">
-                    <div class="achievement-card gold">
-                        <div class="achievement-icon">
-                            <i class="fas fa-trophy"></i>
+            <section class="profile-sections">
+                <div class="section-tabs">
+                    <button class="tab-btn active" data-tab="tierlists">Мои тир-листы</button>
+                    <button class="tab-btn" data-tab="achievements">Ачивки</button>
+                    <button class="tab-btn" data-tab="activity">Активность</button>
+                </div>
+
+                <div class="tab-content active" id="tierlists">
+                    <div class="tierlist-grid">
+                        <div class="tierlist-card">
+                            <div class="tierlist-preview">
+                                <img src="/img/shuters.png" alt="Превью тир-листа">
+                                <div class="tierlist-badge">S+</div>
+                            </div>
+                            <div class="tierlist-info">
+                                <h3>Лучшие шутеры 2023</h3>
+                                <div class="tierlist-meta">
+                                    <span><i class="fas fa-eye"></i> 1.2K</span>
+                                    <span><i class="fas fa-comment"></i> 47</span>
+                                    <span><i class="fas fa-calendar"></i> 2 дня назад</span>
+                                </div>
+                            </div>
                         </div>
-                        <div class="achievement-info">
-                            <h3>Мастер тир-листов</h3>
-                            <p>Создал 20+ тир-листов</p>
-                            <span class="achievement-date">Получено: 15.06.2023</span>
+
+                        <div class="tierlist-card">
+                            <div class="tierlist-preview">
+                                <img src="/img/rpgs.jpg" alt="Превью тир-листа">
+                                <div class="tierlist-badge">A</div>
+                            </div>
+                            <div class="tierlist-info">
+                                <h3>РПГ всех времен</h3>
+                                <div class="tierlist-meta">
+                                    <span><i class="fas fa-eye"></i> 3.4K</span>
+                                    <span><i class="fas fa-comment"></i> 128</span>
+                                    <span><i class="fas fa-calendar"></i> 1 месяц назад</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tierlist-card">
+                            <div class="tierlist-preview">
+                                <img src="/img/ind.jpeg" alt="Превью тир-листа">
+                                <div class="tierlist-badge">S</div>
+                            </div>
+                            <div class="tierlist-info">
+                                <h3>Инди-жемчужины</h3>
+                                <div class="tierlist-meta">
+                                    <span><i class="fas fa-eye"></i> 2.1K</span>
+                                    <span><i class="fas fa-comment"></i> 89</span>
+                                    <span><i class="fas fa-calendar"></i> 3 недели назад</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
+                </div>
 
-                    <div class="achievement-card silver">
-                        <div class="achievement-icon">
-                            <i class="fas fa-comment-dots"></i>
+                <div class="tab-content" id="achievements">
+                    <div class="achievements-grid">
+                        <div class="achievement-card gold">
+                            <div class="achievement-icon">
+                                <i class="fas fa-trophy"></i>
+                            </div>
+                            <div class="achievement-info">
+                                <h3>Мастер тир-листов</h3>
+                                <p>Создал 20+ тир-листов</p>
+                                <span class="achievement-date">Получено: 15.06.2023</span>
+                            </div>
                         </div>
-                        <div class="achievement-info">
-                            <h3>Общительный</h3>
-                            <p>Оставил 100+ комментариев</p>
-                            <span class="achievement-date">Получено: 02.05.2023</span>
+
+                        <div class="achievement-card silver">
+                            <div class="achievement-icon">
+                                <i class="fas fa-comment-dots"></i>
+                            </div>
+                            <div class="achievement-info">
+                                <h3>Общительный</h3>
+                                <p>Оставил 100+ комментариев</p>
+                                <span class="achievement-date">Получено: 02.05.2023</span>
+                            </div>
+                        </div>
+
+                        <div class="achievement-card bronze">
+                            <div class="achievement-icon">
+                                <i class="fas fa-fire"></i>
+                            </div>
+                            <div class="achievement-info">
+                                <h3>Горячая тема</h3>
+                                <p>Тир-лист получил 1K+ просмотров</p>
+                                <span class="achievement-date">Получено: 22.04.2023</span>
+                            </div>
+                        </div>
+
+                        <div class="achievement-card">
+                            <div class="achievement-icon">
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <div class="achievement-info">
+                                <h3>Новичок</h3>
+                                <p>Создал первый тир-лист</p>
+                                <span class="achievement-date">Получено: 10.03.2023</span>
+                            </div>
                         </div>
                     </div>
+                </div>
 
-                    <div class="achievement-card bronze">
-                        <div class="achievement-icon">
-                            <i class="fas fa-fire"></i>
+                <div class="tab-content" id="activity">
+                    <div class="activity-list">
+                        <div class="activity-item">
+                            <div class="activity-icon">
+                                <i class="fas fa-plus-circle"></i>
+                            </div>
+                            <div class="activity-content">
+                                <p>Вы создали новый тир-лист <a href="#">"Лучшие шутеры 2023"</a></p>
+                                <span class="activity-time">2 дня назад</span>
+                            </div>
                         </div>
-                        <div class="achievement-info">
-                            <h3>Горячая тема</h3>
-                            <p>Тир-лист получил 1K+ просмотров</p>
-                            <span class="achievement-date">Получено: 22.04.2023</span>
+
+                        <div class="activity-item">
+                            <div class="activity-icon">
+                                <i class="fas fa-comment"></i>
+                            </div>
+                            <div class="activity-content">
+                                <p>Вы прокомментировали тир-лист <a href="#">"РПГ всех времен"</a></p>
+                                <span class="activity-time">5 дней назад</span>
+                            </div>
+                        </div>
+
+                        <div class="activity-item">
+                            <div class="activity-icon">
+                                <i class="fas fa-trophy"></i>
+                            </div>
+                            <div class="activity-content">
+                                <p>Вы получили достижение <a href="#">"Мастер тир-листов"</a></p>
+                                <span class="activity-time">1 неделю назад</span>
+                            </div>
                         </div>
                     </div>
+                </div>
+            </section>
 
-                    <div class="achievement-card">
-                        <div class="achievement-icon">
-                            <i class="fas fa-star"></i>
+            <!-- Settings Modal -->
+            <div class="settings-modal" id="settingsModal">
+                <div class="settings-content">
+                    <button class="close-settings-modal" id="closeSettingsModal"><i class="fas fa-times"></i></button>
+                    
+                    <div class="settings-header">
+                        <h2><i class="fas fa-cog"></i> Настройки профиля</h2>
+                        <p>Управление вашей учетной записью и настройками</p>
+                    </div>
+                    
+                    <div class="settings-body">
+                        <div class="settings-section">
+                            <h3><i class="fas fa-user-shield"></i> Безопасность</h3>
+                            <button class="settings-btn" id="pass_btn"><i class="fas fa-lock"></i> Изменить пароль</button>
+                            <button class="settings-btn" id="confirmEmailBtn"><i class="fas fa-envelope"></i> Подтвердить email</button>
                         </div>
-                        <div class="achievement-info">
-                            <h3>Новичок</h3>
-                            <p>Создал первый тир-лист</p>
-                            <span class="achievement-date">Получено: 10.03.2023</span>
+                        
+                        <div class="settings-section">
+                            <h3><i class="fas fa-bell"></i> Уведомления</h3>
+                            <button class="settings-btn"><i class="fas fa-comment-alt"></i> Настройки уведомлений</button>
+                            <button class="settings-btn"><i class="fas fa-palette"></i> Внешний вид</button>
+                        </div>
+                        
+                        <div class="settings-section danger-zone">
+                            <h3><i class="fas fa-exclamation-triangle"></i> Опасная зона</h3>
+                            <button class="settings-btn danger-btn" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Выйти из аккаунта</button>
+                            <button class="settings-btn danger-btn" id="deleteAccountBtn"><i class="fas fa-trash-alt"></i> Удалить аккаунт</button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="tab-content" id="activity">
-                <div class="activity-list">
-                    <div class="activity-item">
-                        <div class="activity-icon">
-                            <i class="fas fa-plus-circle"></i>
-                        </div>
-                        <div class="activity-content">
-                            <p>Вы создали новый тир-лист <a href="#">"Лучшие шутеры 2023"</a></p>
-                            <span class="activity-time">2 дня назад</span>
-                        </div>
+            <!-- Profile Edit Modal -->
+            <div class="profile-edit-modal" id="profileEditModal">
+                <div class="profile-edit-content">
+                    <button class="close-edit-modal" id="closeEditModal"><i class="fas fa-times"></i></button>
+                    
+                    <div class="profile-edit-header">
+                        <h2>Редактирование профиля</h2>
+                        <p>Обновите информацию о себе</p>
                     </div>
-
-                    <div class="activity-item">
-                        <div class="activity-icon">
-                            <i class="fas fa-comment"></i>
+                    
+                    <div class="avatar-edit-section">
+                        <div class="avatar-preview">
+                            <img src="/img/default-avatar.jpg" alt="Аватар пользователя" id="avatarPreview">
                         </div>
-                        <div class="activity-content">
-                            <p>Вы прокомментировали тир-лист <a href="#">"РПГ всех времен"</a></p>
-                            <span class="activity-time">5 дней назад</span>
-                        </div>
+                        <button class="avatar-upload-btn" id="avatarUploadBtn">
+                            <i class="fas fa-camera"></i> Изменить аватар
+                        </button>
+                        <input type="file" id="avatarUploadInput" class="avatar-upload-input" accept="image/*">
                     </div>
-
-                    <div class="activity-item">
-                        <div class="activity-icon">
-                            <i class="fas fa-trophy"></i>
+                    
+                    <form class="profile-edit-form" id="profileEditForm">
+                        <div class="form-group">
+                            <label for="username"><i class="fas fa-user"></i> Имя пользователя</label>
+                            <input type="text" id="username" class="form-control">
                         </div>
-                        <div class="activity-content">
-                            <p>Вы получили достижение <a href="#">"Мастер тир-листов"</a></p>
-                            <span class="activity-time">1 неделю назад</span>
+                        
+                        <div class="form-group">
+                            <label for="email"><i class="fas fa-envelope"></i> Email</label>
+                            <input type="email" id="email" class="form-control">
                         </div>
-                    </div>
+                        
+                        <div class="form-group">
+                            <label for="bio"><i class="fas fa-info-circle"></i> О себе</label>
+                            <textarea id="bio" class="form-control" placeholder="Расскажите немного о себе..."></textarea>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-secondary" id="cancelEditBtn">Отмена</button>
+                            <button type="submit" class="btn btn-primary" id="updbtn">Сохранить изменения</button>
+                        </div>
+                    </form>
                 </div>
             </div>
-        </section>
-        <!-- Settings Modal -->
-<div class="settings-modal" id="settingsModal">
-    <div class="settings-content">
-        <button class="close-settings-modal" id="closeSettingsModal"><i class="fas fa-times"></i></button>
-        
-        <div class="settings-header">
-            <h2><i class="fas fa-cog"></i> Настройки профиля</h2>
-            <p>Управление вашей учетной записью и настройками</p>
         </div>
-        
-        <div class="settings-body">
-            <div class="settings-section">
-                <h3><i class="fas fa-user-shield"></i> Безопасность</h3>
-                <button class="settings-btn" id="pass_btn"><i class="fas fa-lock"></i> Изменить пароль</button>
-                <button class="settings-btn"><i class="fas fa-envelope"></i> Изменить email</button>
-            </div>
-            
-            <div class="settings-section">
-                <h3><i class="fas fa-bell"></i> Уведомления</h3>
-                <button class="settings-btn"><i class="fas fa-comment-alt"></i> Настройки уведомлений</button>
-                <button class="settings-btn"><i class="fas fa-palette"></i> Внешний вид</button>
-            </div>
-            
-            <div class="settings-section danger-zone">
-                <h3><i class="fas fa-exclamation-triangle"></i> Опасная зона</h3>
-                <button class="settings-btn danger-btn" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Выйти из аккаунта</button>
-                <button class="settings-btn danger-btn" id="deleteAccountBtn"><i class="fas fa-trash-alt"></i> Удалить аккаунт</button>
-            </div>
-        </div>
-    </div>
-</div>
-</div>
     </main>
 
     <footer class="cyber-footer">
@@ -307,6 +434,38 @@
         </div>
     </footer>
 
+    <div class="change-password-modal" id="changePasswordModal">
+    <div class="change-password-content">
+        <button class="close-change-password" id="closeChangePassword"><i class="fas fa-times"></i></button>
+        
+        <div class="change-password-header">
+            <h2><i class="fas fa-lock"></i> Смена пароля</h2>
+            <p>Введите текущий и новый пароль для изменения</p>
+        </div>
+        
+        <form class="change-password-form" id="changePasswordForm">
+            <div class="form-group">
+                <label for="currentPassword"><i class="fas fa-key"></i> Текущий пароль</label>
+                <input type="password" id="currentPassword" class="form-control" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="newPassword"><i class="fas fa-key"></i> Новый пароль</label>
+                <input type="password" id="newPassword" class="form-control" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="confirmPassword"><i class="fas fa-key"></i> Подтвердите новый пароль</label>
+                <input type="password" id="confirmPassword" class="form-control" required>
+            </div>
+            
+            <div class="form-actions">
+                <button type="button" class="btn btn-secondary" id="cancelChangePassword">Отмена</button>
+                <button type="submit" class="btn btn-primary">Изменить пароль</button>
+            </div>
+        </form>
+    </div>
+</div>
 
     <script>
         // Табы на странице профиля
@@ -327,62 +486,174 @@
                     document.getElementById(tabId).classList.add('active');
                 });
             });
+            
+            // Редактирование раздела "О себе"
+            const editBioBtn = document.getElementById('editBioBtn');
+            const bioEditSection = document.getElementById('bioEditSection');
+            const bioContent = document.querySelector('.profile-bio-content');
+            const bioTextarea = document.getElementById('bioTextarea');
+            const cancelBioEdit = document.getElementById('cancelBioEdit');
+            const saveBioEdit = document.getElementById('saveBioEdit');
+            
+            if (editBioBtn && bioEditSection) {
+                editBioBtn.addEventListener('click', function() {
+                    bioContent.style.display = 'none';
+                    this.style.display = 'none';
+                    bioEditSection.style.display = 'block';
+                    bioTextarea.focus();
+                });
+                
+                cancelBioEdit.addEventListener('click', function() {
+                    bioEditSection.style.display = 'none';
+                    bioContent.style.display = 'block';
+                    editBioBtn.style.display = 'flex';
+                });
+                
+                saveBioEdit.addEventListener('click', function() {
+                    const newBio = bioTextarea.value.trim();
+                    if (newBio) {
+                        bioContent.textContent = newBio;
+                        bioContent.classList.remove('empty');
+                    } else {
+                        bioContent.textContent = 'Пользователь пока не добавил информацию о себе.';
+                        bioContent.classList.add('empty');
+                    }
+                    
+                    bioEditSection.style.display = 'none';
+                    bioContent.style.display = 'block';
+                    editBioBtn.style.display = 'flex';
+                });
+            }
+
+            // Settings Modal Functionality
+            const settingsModal = document.getElementById('settingsModal');
+            const settingsBtn = document.getElementById('ttt');
+            const closeSettingsModal = document.getElementById('closeSettingsModal');
+            
+            if(settingsBtn) {
+                settingsBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    settingsModal.style.display = 'flex';
+                    document.body.style.overflow = 'hidden';
+                });
+            }
+            
+            if(closeSettingsModal) {
+                closeSettingsModal.addEventListener('click', function() {
+                    settingsModal.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                });
+            }
+            
+            settingsModal.addEventListener('click', function(e) {
+                if(e.target === settingsModal) {
+                    settingsModal.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                }
+            });
+            
+            // Logout button functionality
+            
+            
+            // Delete account button functionality
+            const deleteAccountBtn = document.getElementById('deleteAccountBtn');
+            if(deleteAccountBtn) {
+                deleteAccountBtn.addEventListener('click', function() {
+                    if(confirm('ВНИМАНИЕ! Это действие нельзя отменить. Все ваши данные будут удалены безвозвратно. Вы уверены, что хотите удалить аккаунт?')) {
+                        if(prompt('Для подтверждения введите "УДАЛИТЬ" (без кавычек):') === 'УДАЛИТЬ') {
+                            // Здесь должна быть логика удаления аккаунта
+                            window.location.href = '/delete-account';
+                        } else {
+                            alert('Неверное подтверждение. Удаление отменено.');
+                        }
+                    }
+                });
+            }
+
+            // Profile Edit Modal Functionality
+            const profileEditModal = document.getElementById('profileEditModal');
+            const editProfileBtn = document.querySelector('.edit-profile');
+            const closeEditModal = document.getElementById('closeEditModal');
+            const cancelEditBtn = document.getElementById('cancelEditBtn');
+            
+            if(editProfileBtn) {
+                editProfileBtn.addEventListener('click', function() {
+                    profileEditModal.style.display = 'flex';
+                    document.body.style.overflow = 'hidden';
+                });
+            }
+            
+            if(closeEditModal) {
+                closeEditModal.addEventListener('click', function() {
+                    profileEditModal.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                });
+            }
+            
+            if(cancelEditBtn) {
+                cancelEditBtn.addEventListener('click', function() {
+                    profileEditModal.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                });
+            }
+            
+            profileEditModal.addEventListener('click', function(e) {
+                if(e.target === profileEditModal) {
+                    profileEditModal.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                }
+            });
+
+            // Avatar Upload Functionality
+            const avatarUploadBtn = document.getElementById('avatarUploadBtn');
+            const avatarUploadInput = document.getElementById('avatarUploadInput');
+            const avatarPreview = document.getElementById('avatarPreview');
+            
+            if(avatarUploadBtn && avatarUploadInput) {
+                avatarUploadBtn.addEventListener('click', function() {
+                    avatarUploadInput.click();
+                });
+                
+                avatarUploadInput.addEventListener('change', function(e) {
+                    const file = e.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = function(event) {
+                            avatarPreview.src = event.target.result;
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
+            }
+
+            // Mobile Menu Toggle
+            
         });
     </script>
-    <script src="/scripts/profile.js"></script>
     <script>
-        // Settings Modal Functionality
-document.addEventListener('DOMContentLoaded', function() {
-    // Get modal elements
-    const settingsModal = document.getElementById('settingsModal');
-    const settingsBtn = document.getElementById('ttt'); // Кнопка настроек в навигации
-    const closeSettingsModal = document.getElementById('closeSettingsModal');
+        document.addEventListener('DOMContentLoaded', function() {
+    LoadData();
+    // Мобильное меню
+    const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+    const mainNav = document.getElementById('mainNav');
     
-    // Open modal when settings button is clicked
-    if(settingsBtn) {
-        settingsBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            settingsModal.style.display = 'flex';
-            document.body.style.overflow = 'hidden'; // Prevent scrolling when modal is open
-        });
-    }
-    
-    // Close modal when X button is clicked
-    if(closeSettingsModal) {
-        closeSettingsModal.addEventListener('click', function() {
-            settingsModal.style.display = 'none';
-            document.body.style.overflow = 'auto'; // Re-enable scrolling
-        });
-    }
-    
-    // Close modal when clicking outside of it
-    settingsModal.addEventListener('click', function(e) {
-        if(e.target === settingsModal) {
-            settingsModal.style.display = 'none';
-            document.body.style.overflow = 'auto';
+    mobileMenuToggle.addEventListener('click', function() {
+        mainNav.classList.toggle('active');
+        const icon = this.querySelector('i');
+        if (mainNav.classList.contains('active')) {
+            icon.classList.remove('fa-bars');
+            icon.classList.add('fa-times');
+        } else {
+            icon.classList.remove('fa-times');
+            icon.classList.add('fa-bars');
         }
     });
-    
-    // Logout button functionality
-   
-    
-    // Delete account button functionality
-    const deleteAccountBtn = document.getElementById('deleteAccountBtn');
-    if(deleteAccountBtn) {
-        deleteAccountBtn.addEventListener('click', function() {
-            if(confirm('ВНИМАНИЕ! Это действие нельзя отменить. Все ваши данные будут удалены безвозвратно. Вы уверены, что хотите удалить аккаунт?')) {
-                if(prompt('Для подтверждения введите "УДАЛИТЬ" (без кавычек):') === 'УДАЛИТЬ') {
-                    // Here you would typically make an AJAX request to delete account
-                    alert('Ваш аккаунт был удален');
-                    // window.location.href = '/delete-account'; // Uncomment this in production
-                } else {
-                    alert('Неверное подтверждение. Удаление отменено.');
-                }
-            }
-        });
-    }
-});
+    });
     </script>
+    
+    <script src="/scripts/profile.js"></script>
+    <script src="/scripts/change_user_data.js"></script>
+    <script src="/scripts/verify_email.js"></script>
     
 </body>
 </html>

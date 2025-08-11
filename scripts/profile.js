@@ -114,6 +114,7 @@ function updateProfileUI(data) {
     
     const usernameEl = document.querySelector('.profile-username');
     const emailEl = document.querySelector('.profile-email');
+    const DescriptionEl = document.querySelector('.profile-bio-content');
 
     if(data.role && data.role.includes('Admin')) {
         const panel=document.querySelector(".admin-panel-btn")
@@ -134,10 +135,13 @@ function updateProfileUI(data) {
     }
     
     // Проверяем и нормализуем данные
+    const Description = data?.Description ||data?.description
     const username = data?.userName || data?.username || data?.user?.name || 'Гость';
     const email = data?.Email || data?.email || data?.user?.email || 'Не указан';
+    console.log(Description);
     
     // Обновляем UI
+    DescriptionEl.textContent= Description; // если закоментить эту строку то всё работает
     usernameEl.textContent = username;
     emailEl.innerHTML = `<i class="fas fa-envelope"></i> ${email}`;
 }
@@ -145,4 +149,121 @@ function updateProfileUI(data) {
 function showError(message) {
     alert(message); // Или другой способ показа ошибки
 }
+const saveBioBtn = document.getElementById('saveBioEdit');
+    const bioTextarea = document.getElementById('bioTextarea');
+    
+    saveBioBtn.addEventListener('click', async function(e) {
+        e.preventDefault();
+        
+        const newBio = bioTextarea.value.trim();
+        const token = localStorage.getItem('myToken');
+
+        if (!newBio) {
+            alert('Пожалуйста, введите информацию о себе');
+            return;
+        }
+
+        try {
+            const response = await fetch('http://192.168.0.103:5001/api/user/change-description', {
+                method: 'POST',
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify(newBio)
+            });
+
+            if (!response.ok) {
+                throw new Error('Ошибка при сохранении');
+            }
+
+            alert('Данные успешно сохранены!');
+            window.location.reload();
+            
+        } catch (error) {
+            console.error('Ошибка:', error);
+            alert('Не удалось сохранить: ' + error.message);
+        }
+    });
+
+     const changePasswordModal = document.getElementById('changePasswordModal');
+    const passBtn = document.getElementById('pass_btn');
+    const closeChangePassword = document.getElementById('closeChangePassword');
+    const cancelChangePassword = document.getElementById('cancelChangePassword');
+    
+    if(passBtn) {
+        passBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            changePasswordModal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        });
+    }
+    
+    if(closeChangePassword) {
+        closeChangePassword.addEventListener('click', function() {
+            changePasswordModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        });
+    }
+    
+    if(cancelChangePassword) {
+        cancelChangePassword.addEventListener('click', function() {
+            changePasswordModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        });
+    }
+    
+    changePasswordModal.addEventListener('click', function(e) {
+        if(e.target === changePasswordModal) {
+            changePasswordModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+    });
+
+    // Password Change Form Submission
+    const changePasswordForm = document.getElementById('changePasswordForm');
+    if(changePasswordForm) {
+        changePasswordForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const currentPassword = document.getElementById('currentPassword').value;
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            if(newPassword !== confirmPassword) {
+                alert('Новый пароль и подтверждение не совпадают');
+                return;
+            }
+            
+            // Отправка данных на сервер
+            fetch('http://192.168.0.103:5001/api/user/change-password', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    OldPassword: currentPassword,
+                    NewPassword: newPassword
+                }),
+                credentials: 'include'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if(data.status === 'ok') {
+                    alert('Пароль успешно изменён');
+                    changePasswordModal.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                    location.reload(); // Обновляем страницу
+                } else {
+                    alert(data.message || 'Ошибка при изменении пароля');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Произошла ошибка при отправке запроса');
+            });
+        });
+    }
+
 });

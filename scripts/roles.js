@@ -28,6 +28,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const url = 'http://192.168.0.103:5002/api/admin/change-role';
             const response = await fetch(url, {
                 method: 'POST',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json'
                 },
@@ -39,12 +40,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
             if (!response.ok) {
                 const result1 = await response.json();
+                alert(JSON.stringify(result1))
                 throw new Error(result1);
+                
             }
 
             const result = await response.json();
             console.log('Role assignment result:', result);
-            alert(`Роль "${role}" успешно назначена пользователю ${username}`);
+            alert(JSON.stringify(result));
 
             // Очищаем форму
             usernameInput.value = '';
@@ -55,7 +58,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         } catch (error) {
             console.error('Error assigning role:', error);
-            alert('Произошла ошибка при назначении роли');
+            alert('Произошла ошибка при назначении роли' , result);
         } finally {
             // Восстанавливаем кнопку
             saveBtn.disabled = false;

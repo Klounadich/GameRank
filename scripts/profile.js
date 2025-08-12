@@ -58,7 +58,7 @@ async function LoadProfile() {
         });
 
         // Обработка 401 Unauthorized
-        if (response.status === 401) {
+        if (response.status === 401  ) {
             localStorage.removeItem('authToken');
             window.location.href = '/index.html';
             return;
@@ -72,7 +72,7 @@ async function LoadProfile() {
         updateProfileUI(data);
     } catch (error) {
         console.error('Ошибка загрузки профиля:', error);
-        showError('Не удалось загрузить данные профиля');
+        window.location.href = '/index.html';
     }
 }
 

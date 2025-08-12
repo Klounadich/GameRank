@@ -561,8 +561,25 @@
                 deleteAccountBtn.addEventListener('click', function() {
                     if(confirm('ВНИМАНИЕ! Это действие нельзя отменить. Все ваши данные будут удалены безвозвратно. Вы уверены, что хотите удалить аккаунт?')) {
                         if(prompt('Для подтверждения введите "УДАЛИТЬ" (без кавычек):') === 'УДАЛИТЬ') {
-                            // Здесь должна быть логика удаления аккаунта
-                            window.location.href = '/delete-account';
+                            try {
+            const response =  fetch('http://192.168.0.103:5001/api/user/checkaccess', {
+            method: 'GET',
+            credentials: 'include'
+        });
+
+        if (response.ok) {
+            localStorage.removeItem('myToken');
+            window.location.href = '/index.html';
+        } else {
+            throw new Error('Ошибка при выходе');
+            window.location.href = '/index.html';
+        }
+    } catch (error) {
+        window.location.href = '/index.html';
+        
+    }
+
+                            window.location.href = '/index.html';
                         } else {
                             alert('Неверное подтверждение. Удаление отменено.');
                         }

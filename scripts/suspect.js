@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const url = 'http://192.168.0.103:5002/api/admin/get-suspect';
             const response = await fetch(url, {
                 method: 'GET',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json'
                 }
@@ -111,9 +112,9 @@ document.addEventListener('DOMContentLoaded', function() {
             const result = await response.json();
             console.log('Ban result:', result);
             alert(`Пользователь ${username} успешно забанен`);
-            
+            loadSuspiciousAccounts();
             // Обновляем данные после бана
-            sendSearchData();
+            
             
         } catch (error) {
             console.error('Ban error:', error);
@@ -152,6 +153,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const url = 'http://192.168.0.103:5002/api/admin/ignore-suspect';
             const response = await fetch(url, {
                 method: 'POST',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json'
                 },
@@ -164,8 +166,8 @@ document.addEventListener('DOMContentLoaded', function() {
             loadSuspiciousAccounts(); // Обновляем список
             
         } catch (error) {
-            console.error('Ignore error:', error);
-            alert('Ошибка при игнорировании');
+            alert('Предупреждение игнорировано')
+            loadSuspiciousAccounts();
         }
     }
 });

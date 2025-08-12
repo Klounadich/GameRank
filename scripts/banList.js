@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             const response = await fetch(url, {
                 method: 'GET',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json'
                 }
@@ -101,10 +102,10 @@ document.addEventListener('DOMContentLoaded', function() {
         alert('Пользователь успешно разбанен');
         
         // Обновляем данные после разбана
-        sendSearchData();
+        loadBannedUsers();
         
     } catch (error) {
-        console.error('Unban error:', error);
+        
         alert('Произошла ошибка при попытке разбана пользователя');
     }
 }

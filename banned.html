@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Доступ ограничен</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Ваши существующие стили + новые для страницы бана */
+        :root {
+            --primary: #6e00ff;
+            --primary-dark: #4d00b3;
+            --secondary: #00f0ff;
+            --accent: #ff00aa;
+            --dark: #0d0d15;
+            --darker: #08080f;
+            --light: #e0e0e0;
+            --gray: #2a2a3a;
+            --success: #00ff88;
+            --warning: #ffaa00;
+            --danger: #ff0044;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', sans-serif;
+        }
+
+        body {
+            background-color: var(--darker);
+            color: var(--light);
+            overflow-x: hidden;
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .cyberpunk-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(135deg, rgba(110, 0, 255, 0.05) 0%, transparent 50%, rgba(0, 240, 255, 0.05) 100%),
+                repeating-linear-gradient(45deg, var(--darker) 0px, var(--darker) 1px, var(--dark) 1px, var(--dark) 2px);
+            z-index: -1;
+        }
+
+        /* Стили для страницы бана */
+        .ban-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .ban-content {
+            background-color: rgba(42, 42, 58, 0.9);
+            border-radius: 12px;
+            padding: 3rem;
+            max-width: 700px;
+            width: 100%;
+            box-shadow: 0 0 40px rgba(255, 0, 68, 0.3);
+            border: 2px solid var(--danger);
+            backdrop-filter: blur(10px);
+            animation: pulse 2s infinite alternate;
+        }
+
+        @keyframes pulse {
+            from {
+                box-shadow: 0 0 20px rgba(255, 0, 68, 0.3);
+            }
+            to {
+                box-shadow: 0 0 40px rgba(255, 0, 68, 0.6);
+            }
+        }
+
+        .ban-icon {
+            font-size: 5rem;
+            color: var(--danger);
+            margin-bottom: 1.5rem;
+            text-shadow: 0 0 20px var(--danger);
+        }
+
+        .ban-title {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(90deg, var(--danger), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .ban-message {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+            color: rgba(224, 224, 224, 0.9);
+        }
+
+        .ban-details {
+            background-color: rgba(13, 13, 21, 0.7);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            text-align: left;
+            border-left: 4px solid var(--danger);
+        }
+
+        .detail-item {
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .detail-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .detail-icon {
+            color: var(--danger);
+            margin-right: 0.8rem;
+            width: 20px;
+        }
+
+        .appeal-section {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--gray);
+        }
+
+        .appeal-text {
+            margin-bottom: 1.5rem;
+            color: rgba(224, 224, 224, 0.8);
+        }
+
+        .appeal-button {
+            padding: 0.8rem 1.5rem;
+            background-color: transparent;
+            color: var(--secondary);
+            border: 2px solid var(--secondary);
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+
+        .appeal-button:hover {
+            background-color: rgba(0, 240, 255, 0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .ban-content {
+                padding: 2rem;
+            }
+            
+            .ban-icon {
+                font-size: 4rem;
+            }
+            
+            .ban-title {
+                font-size: 2rem;
+            }
+            
+            .ban-message {
+                font-size: 1.1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .ban-content {
+                padding: 1.5rem;
+            }
+            
+            .ban-icon {
+                font-size: 3rem;
+            }
+            
+            .ban-title {
+                font-size: 1.7rem;
+            }
+            
+            .ban-details {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="cyberpunk-overlay"></div>
+    
+    <div class="ban-container">
+        <div class="ban-content">
+            <div class="ban-icon">
+                <i class="fas fa-ban"></i>
+            </div>
+            
+            <h1 class="ban-title">Доступ ограничен</h1>
+            
+            <p class="ban-message">
+                К сожалению, ваш доступ к сайту был ограничен. Это могло произойти по нескольким причинам, 
+                включая нарушение правил использования сайта или подозрительную активность.
+            </p>
+            
+            <div class="ban-details">
+                <div class="detail-item">
+                    <i class="fas fa-exclamation-circle detail-icon"></i>
+                    <span>Тип ограничения: <strong>Полная блокировка</strong></span>
+                </div>
+                
+                <div class="detail-item">
+                    <i class="fas fa-clock detail-icon"></i>
+                    <span>Дата применения: <strong id="ban-date">Загрузка...</strong></span>
+                </div>
+                
+                <div class="detail-item">
+                    <i class="fas fa-hourglass-half detail-icon"></i>
+                    <span>Срок блокировки: <strong id="ban-duration">Загрузка...</strong></span>
+                </div>
+                
+                <div class="detail-item">
+                    <i class="fas fa-list-alt detail-icon"></i>
+                    <span>Причина: <strong id="ban-reason">Загрузка...</strong></span>
+                </div>
+                
+                <div class="detail-item">
+                    <i class="fas fa-id-card detail-icon"></i>
+                    <span>ID блокировки: <strong id="ban-id">Загрузка...</strong></span>
+                </div>
+            </div>
+            
+            <div class="appeal-section">
+                <p class="appeal-text">
+                    Если вы считаете, что это ошибка, вы можете подать апелляцию на решение модератора.
+                </p>
+                
+                <a href="mailto:support@example.com?subject=Апелляция на блокировку" class="appeal-button">
+                    <i class="fas fa-envelope"></i>
+                    Подать апелляцию
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+    
+    <!-- Подключение системы банов -->
+    <script src="/path/to/ban-system.js"></script>
+</body>
+</html>

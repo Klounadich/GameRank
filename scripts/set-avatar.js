@@ -1,4 +1,4 @@
- document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function() {
     // Элементы для работы с аватаром
     const editAvatarBtn = document.querySelector('.edit-avatar');
     const avatarModal = document.createElement('div');
@@ -11,6 +11,10 @@
             </div>
             <input type="file" id="avatarFileInput" accept="image/*" style="display: none;">
             <button class="btn-select-avatar" id="selectAvatarBtn">Выбрать изображение</button>
+            <div class="avatar-loading" id="avatarLoading" style="display: none;">
+                <div class="loading-spinner"></div>
+                <p>Загрузка аватара...</p>
+            </div>
             <div class="avatar-modal-actions">
                 <button class="btn btn-secondary" id="cancelAvatarChange">Отмена</button>
                 <button class="btn btn-primary" id="saveAvatarBtn">Сохранить</button>
@@ -89,6 +93,26 @@
             justify-content: center;
             gap: 1rem;
         }
+        
+        .avatar-loading {
+            margin: 1rem 0;
+            color: #fff;
+        }
+        
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #3a3a4a;
+            border-top: 4px solid #4a90e2;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     `;
     document.head.appendChild(style);
 
@@ -105,6 +129,7 @@
     const avatarPreviewImg = document.querySelector('.avatar-preview-img');
     const cancelAvatarChange = document.getElementById('cancelAvatarChange');
     const saveAvatarBtn = document.getElementById('saveAvatarBtn');
+    const avatarLoading = document.getElementById('avatarLoading');
 
     selectAvatarBtn.addEventListener('click', function() {
         avatarFileInput.click();
@@ -145,11 +170,17 @@
             return;
         }
 
+        // Показываем индикатор загрузки
+        avatarLoading.style.display = 'block';
+        saveAvatarBtn.disabled = true;
+        cancelAvatarChange.disabled = true;
+        selectAvatarBtn.disabled = true;
+
         const formData = new FormData();
-        formData.append('avatar', file);
+        formData.append('file', file);
 
         // Отправка на сервер
-        fetch('/api/user/avatar', {
+        fetch('http://192.168.0.103:5001/api/user/set-avatar', {
             method: 'POST',
             body: formData,
             credentials: 'include' // для отправки куки, если используется аутентификация
@@ -162,7 +193,7 @@
         })
         .then(data => {
             if (data.success) {
-                // Обновляем аватар на странице
+                window.location.href = '/Profile.html';
                 const avatarElements = document.querySelectorAll('.profile-avatar img, .avatar-preview img');
                 avatarElements.forEach(img => {
                     img.src = data.avatarUrl + '?' + new Date().getTime(); // Добавляем timestamp для избежания кеширования
@@ -174,8 +205,15 @@
             }
         })
         .catch(error => {
+            window.location.href = '/Profile.html';
             console.error('Error:', error);
-            alert('Произошла ошибка: ' + error.message);
+        })
+        .finally(() => {
+            // Скрываем индикатор загрузки в любом случае
+            avatarLoading.style.display = 'none';
+            saveAvatarBtn.disabled = false;
+            cancelAvatarChange.disabled = false;
+            selectAvatarBtn.disabled = false;
         });
     });
 

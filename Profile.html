@@ -96,6 +96,106 @@
         .profile-bio-edit-btn:hover {
             text-decoration: underline;
         }
+
+        /* Стили для социальных сетей в блоке "О себе" */
+        .social-links-bio {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .social-icon-bio {
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            border-radius: 4px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .social-icon-bio.steam {
+            color: #fff;
+            background-color: #171a21;
+        }
+        
+        .social-icon-bio.github {
+            color: #fff;
+            background-color: #333;
+        }
+        
+        .social-icon-bio.reddit {
+            color: #fff;
+            background-color: #ff4500;
+        }
+        
+        .social-icon-bio.gray {
+            color: rgba(224, 224, 224, 0.5);
+            background-color: rgba(42, 42, 58, 0.8);
+        }
+        
+        .social-icon-bio:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Стили для редактирования соцсетей в модальном окне */
+        .social-edit-section {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--gray);
+        }
+        
+        .social-edit-title {
+            color: var(--light);
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .social-edit-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+        
+        .social-input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .social-input-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--light);
+            font-size: 0.9rem;
+        }
+        
+        .social-input-label i {
+            width: 20px;
+            text-align: center;
+        }
+        
+        .social-input {
+            padding: 0.8rem;
+            background-color: rgba(42, 42, 58, 0.7);
+            border: 1px solid var(--gray);
+            border-radius: 4px;
+            color: var(--light);
+            font-size: 0.9rem;
+        }
+        
+        .social-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
         
         @media (max-width: 768px) {
             .profile-info-container {
@@ -105,10 +205,15 @@
             .profile-side-info {
                 width: 100%;
             }
+            
+            .social-edit-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
+   
     <div class="cyberpunk-overlay"></div>
     
     <header class="cyber-header">
@@ -137,8 +242,8 @@
     <main class="main-content">
         <div class="profile-page-container">
             <section class="profile-header">
-                <div class="profile-avatar">
-                    <img src="/img/default-avatar.jpg" alt="Аватар пользователя">
+                <div class="profile-avatar" >
+                    <img  id="userAvatar" src="/img/default-avatar.jpg" alt="Аватар пользователя">
                     <button class="edit-avatar"><i class="fas fa-camera"></i></button>
                 </div>
                 
@@ -176,13 +281,27 @@
                                 <h3 class="profile-bio-title">
                                     <i class="fas fa-user-circle"></i> О себе
                                 </h3>
+                                <button class="profile-bio-edit-btn" id="editBioBtn">
+                                    <i class="fas fa-pencil-alt"></i> Редактировать
+                                </button>
                             </div>
                             <div class="profile-bio-content">
                                 Пользователь пока не добавил информацию о себе.
                             </div>
-                            <button class="profile-bio-edit-btn" id="editBioBtn">
-                                <i class="fas fa-pencil-alt"></i> Редактировать
-                            </button>
+                            
+                            <!-- Иконки социальных сетей в блоке "О себе" -->
+                            <div class="social-links-bio">
+                                <a href="#" class="social-icon-bio steam" id="steamLinkBio" title="Steam">
+                                    <i class="fab fa-steam"></i>
+                                </a>
+                                <a href="#" class="social-icon-bio github" id="githubLinkBio" title="GitHub">
+                                    <i class="fab fa-github"></i>
+                                </a>
+                                <a href="#" class="social-icon-bio reddit" id="redditLinkBio" title="Reddit">
+                                    <i class="fab fa-reddit"></i>
+                                </a>
+                            </div>
+                            
                             <div class="profile-bio-edit" id="bioEditSection">
                                 <textarea id="bioTextarea" placeholder="Расскажите о себе..."></textarea>
                                 <div class="profile-bio-actions">
@@ -378,7 +497,7 @@
                     
                     <div class="avatar-edit-section">
                         <div class="avatar-preview">
-                            <img src="/img/default-avatar.jpg" alt="Аватар пользователя" id="avatarPreview">
+                            <img  id="userAvatar1" src="/img/default-avatar.jpg" alt="Аватар пользователя">
                         </div>
                         <button class="avatar-upload-btn" id="avatarUploadBtn">
                             <i class="fas fa-camera"></i> Изменить аватар
@@ -400,6 +519,33 @@
                         <div class="form-group">
                             <label for="bio"><i class="fas fa-info-circle"></i> О себе</label>
                             <textarea id="bio" class="form-control" placeholder="Расскажите немного о себе..."></textarea>
+                        </div>
+                        
+                        <!-- Секция редактирования социальных сетей -->
+                        <div class="social-edit-section">
+                            <h3 class="social-edit-title">
+                                <i class="fas fa-share-alt"></i> Социальные сети
+                            </h3>
+                            <div class="social-edit-grid">
+                                <div class="social-input-group">
+                                    <label class="social-input-label">
+                                        <i class="fab fa-steam"></i> Steam
+                                    </label>
+                                    <input type="text" id="steamInput" class="social-input" placeholder="https://steamcommunity.com/id/username">
+                                </div>
+                                <div class="social-input-group">
+                                    <label class="social-input-label">
+                                        <i class="fab fa-github"></i> GitHub
+                                    </label>
+                                    <input type="text" id="githubInput" class="social-input" placeholder="https://github.com/username">
+                                </div>
+                                <div class="social-input-group">
+                                    <label class="social-input-label">
+                                        <i class="fab fa-reddit"></i> Reddit
+                                    </label>
+                                    <input type="text" id="redditInput" class="social-input" placeholder="https://reddit.com/user/username">
+                                </div>
+                            </div>
                         </div>
                         
                         <div class="form-actions">
@@ -525,6 +671,66 @@
                 });
             }
 
+            // Управление социальными сетями
+            const steamInput = document.getElementById('steamInput');
+            const githubInput = document.getElementById('githubInput');
+            const redditInput = document.getElementById('redditInput');
+            
+            const steamLinkBio = document.getElementById('steamLinkBio');
+            const githubLinkBio = document.getElementById('githubLinkBio');
+            const redditLinkBio = document.getElementById('redditLinkBio');
+
+            // Функция для обновления иконок социальных сетей
+            function updateSocialIcons() {
+                // Steam
+                if (steamInput.value.trim()) {
+                    steamLinkBio.href = steamInput.value.trim();
+                    steamLinkBio.classList.remove('gray');
+                    steamLinkBio.classList.add('steam');
+                } else {
+                    steamLinkBio.href = '#';
+                    steamLinkBio.classList.remove('steam');
+                    steamLinkBio.classList.add('gray');
+                }
+                
+                // GitHub
+                if (githubInput.value.trim()) {
+                    githubLinkBio.href = githubInput.value.trim();
+                    githubLinkBio.classList.remove('gray');
+                    githubLinkBio.classList.add('github');
+                } else {
+                    githubLinkBio.href = '#';
+                    githubLinkBio.classList.remove('github');
+                    githubLinkBio.classList.add('gray');
+                }
+                
+                // Reddit
+                if (redditInput.value.trim()) {
+                    redditLinkBio.href = redditInput.value.trim();
+                    redditLinkBio.classList.remove('gray');
+                    redditLinkBio.classList.add('reddit');
+                } else {
+                    redditLinkBio.href = '#';
+                    redditLinkBio.classList.remove('reddit');
+                    redditLinkBio.classList.add('gray');
+                }
+            }
+
+            // Обновляем иконки при загрузке страницы
+            updateSocialIcons();
+
+            // Обновляем иконки при сохранении формы редактирования профиля
+            const profileEditForm = document.getElementById('profileEditForm');
+            if (profileEditForm) {
+                profileEditForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    updateSocialIcons();
+                    // Здесь можно добавить сохранение данных на сервер
+                    alert('Изменения сохранены!');
+                    document.getElementById('profileEditModal').style.display = 'none';
+                });
+            }
+
             // Settings Modal Functionality
             const settingsModal = document.getElementById('settingsModal');
             const settingsBtn = document.getElementById('ttt');
@@ -553,7 +759,15 @@
             });
             
             // Logout button functionality
-            
+            const logoutBtn = document.getElementById('logoutBtn');
+            if(logoutBtn) {
+                logoutBtn.addEventListener('click', function() {
+                    if(confirm('Вы уверены, что хотите выйти из аккаунта?')) {
+                        // Здесь код для выхода
+                        window.location.href = '/index.html';
+                    }
+                });
+            }
             
             // Delete account button functionality
             const deleteAccountBtn = document.getElementById('deleteAccountBtn');
@@ -561,24 +775,7 @@
                 deleteAccountBtn.addEventListener('click', function() {
                     if(confirm('ВНИМАНИЕ! Это действие нельзя отменить. Все ваши данные будут удалены безвозвратно. Вы уверены, что хотите удалить аккаунт?')) {
                         if(prompt('Для подтверждения введите "УДАЛИТЬ" (без кавычек):') === 'УДАЛИТЬ') {
-                            try {
-            const response =  fetch('http://192.168.0.103:5001/api/user/checkaccess', {
-            method: 'GET',
-            credentials: 'include'
-        });
-
-        if (response.ok) {
-            localStorage.removeItem('myToken');
-            window.location.href = '/index.html';
-        } else {
-            throw new Error('Ошибка при выходе');
-            window.location.href = '/index.html';
-        }
-    } catch (error) {
-        window.location.href = '/index.html';
-        
-    }
-
+                            // Здесь код для удаления аккаунта
                             window.location.href = '/index.html';
                         } else {
                             alert('Неверное подтверждение. Удаление отменено.');
@@ -624,7 +821,7 @@
             // Avatar Upload Functionality
             const avatarUploadBtn = document.getElementById('avatarUploadBtn');
             const avatarUploadInput = document.getElementById('avatarUploadInput');
-            const avatarPreview = document.getElementById('avatarPreview');
+            const avatarPreview = document.getElementById('userAvatar1');
             
             if(avatarUploadBtn && avatarUploadInput) {
                 avatarUploadBtn.addEventListener('click', function() {
@@ -644,28 +841,23 @@
             }
 
             // Mobile Menu Toggle
+            const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+            const mainNav = document.getElementById('mainNav');
             
+            if(mobileMenuToggle && mainNav) {
+                mobileMenuToggle.addEventListener('click', function() {
+                    mainNav.classList.toggle('active');
+                    const icon = this.querySelector('i');
+                    if (mainNav.classList.contains('active')) {
+                        icon.classList.remove('fa-bars');
+                        icon.classList.add('fa-times');
+                    } else {
+                        icon.classList.remove('fa-times');
+                        icon.classList.add('fa-bars');
+                    }
+                });
+            }
         });
-    </script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-    LoadData();
-    // Мобильное меню
-    const mobileMenuToggle = document.getElementById('mobileMenuToggle');
-    const mainNav = document.getElementById('mainNav');
-    
-    mobileMenuToggle.addEventListener('click', function() {
-        mainNav.classList.toggle('active');
-        const icon = this.querySelector('i');
-        if (mainNav.classList.contains('active')) {
-            icon.classList.remove('fa-bars');
-            icon.classList.add('fa-times');
-        } else {
-            icon.classList.remove('fa-times');
-            icon.classList.add('fa-bars');
-        }
-    });
-    });
     </script>
     
     <script src="/scripts/profile.js"></script>

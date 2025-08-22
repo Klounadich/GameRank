@@ -7,50 +7,80 @@
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="icon" href="/img/Logo.png"  type="image/png">
+    <style>
+        /* Стили для поля пароля с глазком */
+        .password-container {
+            position: relative;
+            width: 100%;
+        }
+        
+        .password-container input {
+            padding-right: 40px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        
+        .toggle-password {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #00ffea;
+            font-size: 16px;
+        }
+        
+        .toggle-password:hover {
+            color: #ff00ff;
+        }
+    </style>
 </head>
 <body>
     <div id="custom-alert" class="cyber-alert">
-    <div class="cyber-alert-content">
-        <div class="cyber-alert-icon">
-            <i class="fas fa-exclamation-triangle"></i>
+        <div class="cyber-alert-content">
+            <div class="cyber-alert-icon">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <div class="cyber-alert-message"></div>
+            <button class="cyber-alert-close">&times;</button>
         </div>
-        <div class="cyber-alert-message"></div>
-        <button class="cyber-alert-close">&times;</button>
     </div>
-</div>
+    
     <div class="cyberpunk-overlay"></div>
     
     <header class="cyber-header">
-    <div class="header-container">
-        <div class="logo">
-            <a href="/index.html"><span class="logo-icon"><img src="/img/Logo.png" width="100px"></span>
-            <span class="logo-text">GameRank</span></a>
-        </div>
-        <button class="mobile-menu-toggle" id="mobileMenuToggle">
-            <i class="fas fa-bars"></i>
-        </button>
-        <nav class="main-nav" id="mainNav">
-            <ul class="nav-links">
-                <li><a href="/Tier-List.html" class="nav-link"><i class="fas fa-plus-circle"></i> Создать тир-лист</a></li>
-                <li><a href="#" class="nav-link"><i class="fas fa-newspaper"></i> Новости</a></li>
-            </ul>
-            
-            <div class="nav-right">
-                <a href="#" class="nav-link auth-trigger" id="auth-button">
-                    <i class="fas fa-user"></i> Авторизоваться
-                </a>
-                <a href="/Profile.html" class="profile-container" style="display: none;">
-                    <img class="profile-avatar" src="" width="70px" height="70px" alt="Аватар">
-                    <div class="profile-username"></div>
-
-                </a>
-                <span class="admin-badge">
-            <i class="fas fa-shield-alt"></i> Админ
-        </span>
+        <div class="header-container">
+            <div class="logo">
+                <a href="/index.html"><span class="logo-icon"><img src="/img/Logo.png" width="100px"></span>
+                <span class="logo-text">GameRank</span></a>
             </div>
-        </nav>
-    </div>
-</header>
+            <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            <nav class="main-nav" id="mainNav">
+                <ul class="nav-links">
+                    <li><a href="/Tier-List.html" class="nav-link"><i class="fas fa-plus-circle"></i> Создать тир-лист</a></li>
+                    <li><a href="#" class="nav-link"><i class="fas fa-newspaper"></i> Новости</a></li>
+                </ul>
+                
+                <div class="nav-right">
+                    <a href="#" class="nav-link auth-trigger" id="auth-button">
+                        <i class="fas fa-user"></i> Авторизоваться
+                    </a>
+                    <a href="/Profile.html" class="profile-container" style="display: none;">
+                        <img class="profile-avatar" id="userAvatar" src="" width="70px" height="70px" alt="Аватар">
+                        <div class="profile-username"></div>
+                    </a>
+                    <span class="admin-badge">
+                        <i class="fas fa-shield-alt"></i> Админ
+                    </span>
+                </div>
+            </nav>
+        </div>
+    </header>
+    
     <main class="main-content">
         <section class="hero-section">
             <div class="hero-content">
@@ -124,16 +154,22 @@
             <span class="close-auth">&times;</span>
             <h2>Войти в GameRank</h2>
             <div class="auth-providers">
-                <button class="auth-provider google"><i class="fab fa-google"></i> Google</button>
-                <button class="auth-provider github"><i class="fab fa-github"></i> GitHub</button>
-                <button class="auth-provider steam"><i class="fab fa-steam"></i> Steam</button>
+                <button class="auth-provider google"><i class="fab fa-google"></i> Google *Soon*</button>
+                <button class="auth-provider github"><i class="fab fa-github"></i> GitHub *Soon*</button>
+                <button class="auth-provider steam"><i class="fab fa-steam"></i> Steam *Soon*</button>
+                <button class="auth-provider qr"><i class="fa-solid fa-qrcode"></i> Вход по QR-коду</button>
             </div>
             <div class="auth-divider">
                 <span>или</span>
             </div>
             <form class="auth-form">
-                <input type="text" placeholder="Имя пользователя" id="Auth_UserName"required>
-                <input type="password" placeholder="Пароль" id="Auth_Pass" required>
+                <input type="text" placeholder="Имя пользователя" id="Auth_UserName" required>
+                <div class="password-container">
+                    <input type="password" placeholder="Пароль" id="Auth_Pass" required>
+                    <button type="button" class="toggle-password" id="togglePassword">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
                 <button type="submit" class="auth-submit">Войти</button>
             </form>
             
@@ -144,5 +180,28 @@
     </div>
 
     <script src="/scripts/main.js"></script>
+    <script>
+        // Функция для переключения видимости пароля
+        document.addEventListener('DOMContentLoaded', function() {
+            const togglePassword = document.getElementById('togglePassword');
+            const passwordInput = document.getElementById('Auth_Pass');
+            
+            togglePassword.addEventListener('click', function() {
+                // Переключаем тип поля ввода
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+                
+                // Меняем иконку
+                const eyeIcon = this.querySelector('i');
+                if (type === 'password') {
+                    eyeIcon.classList.remove('fa-eye-slash');
+                    eyeIcon.classList.add('fa-eye');
+                } else {
+                    eyeIcon.classList.remove('fa-eye');
+                    eyeIcon.classList.add('fa-eye-slash');
+                }
+            });
+        });
+    </script>
 </body>
 </html>

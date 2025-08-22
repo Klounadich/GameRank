@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     LoadData();
+    loadAvatar();
     // Мобильное меню
     const mobileMenuToggle = document.getElementById('mobileMenuToggle');
     const mainNav = document.getElementById('mainNav');
@@ -17,7 +18,69 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
 
+    async function loadAvatar() {
+    const avatarImg = document.getElementById('userAvatar');
+    if (!avatarImg) return;
 
+    try {
+        // Добавляем случайный параметр для предотвращения кеширования
+        const timestamp = new Date().getTime();
+        const response = await fetch(`http://192.168.0.103:5001/api/user/showavatar?t=${timestamp}`, {
+            method: 'GET',
+            credentials: 'include',
+            headers: {
+                'Cache-Control': 'no-cache'
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        if (response.status === 403  ) {
+            localStorage.removeItem('authToken');
+            window.location.href = '/banned.html';
+            return;
+        }
+
+        // Проверяем, что ответ действительно изображение
+        
+
+        // Очищаем предыдущий Blob URL если он был
+        
+
+        // Создаем новый Blob URL
+        const blob = await response.blob();
+        const objectUrl = URL.createObjectURL(blob);
+        
+        // Устанавливаем новый src
+        avatarImg.onload = function() {
+            console.log('Аватар успешно загружен');
+            // Освобождаем память после загрузки
+            URL.revokeObjectURL(this.src);
+        };
+        avatarImg.onerror = function() {
+            console.error('Ошибка загрузки аватара');
+            this.src = '/img/default-avatar.jpg';
+        };
+        avatarImg.src = objectUrl;
+
+    } catch (error) {
+        console.error('Ошибка при загрузке аватара:', error);
+        avatarImg.src = '/img/default-avatar.jpg';
+    }
+}
+
+// Вызываем при загрузке страницы
+document.addEventListener('DOMContentLoaded', loadAvatar);
+
+// Для принудительного обновления аватара после загрузки нового
+function refreshAvatar() {
+    const avatarImg = document.getElementById('userAvatar');
+    if (avatarImg && avatarImg.src.startsWith('blob:')) {
+        URL.revokeObjectURL(avatarImg.src);
+    }
+    loadAvatar();
+}
     // Auth Check
 
     async function LoadData() {
@@ -35,6 +98,12 @@ document.addEventListener('DOMContentLoaded', function() {
             localStorage.removeItem('authToken');
             return;
         }
+        if (response.status === 403) {
+            localStorage.removeItem('authToken');
+            window.location.href = '/banned.html';
+            return;
+        }
+       
 
         if (response.ok) {
             const data = await response.json();

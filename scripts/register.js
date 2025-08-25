@@ -17,7 +17,7 @@ document.getElementById("registerForm").addEventListener("submit", async (e) => 
             return;
             
         }
-        const response = await fetch("http://192.168.0.103:5001/api/auth/register", {
+        const response = await fetch("https://192.168.0.103/api/auth/register", {
             method: "POST",
             credentials:'include',
             headers: {

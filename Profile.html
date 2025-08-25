@@ -471,16 +471,17 @@
                         </div>
                         
                         <div class="settings-section">
-                            <h3><i class="fas fa-bell"></i> Уведомления</h3>
-                            <button class="settings-btn"><i class="fas fa-comment-alt"></i> Настройки уведомлений</button>
-                            <button class="settings-btn"><i class="fas fa-palette"></i> Внешний вид</button>
-                        </div>
+    <h3><i class="fas fa-qrcode"></i> Дополнительно</h3>
+    <button class="settings-btn" id="scanQRBtn"><i class="fas fa-qrcode"></i> Сканировать QR код</button>
+    <button class="settings-btn"><i class="fas fa-comment-alt"></i> Настройки уведомлений</button>
+</div>
                         
                         <div class="settings-section danger-zone">
                             <h3><i class="fas fa-exclamation-triangle"></i> Опасная зона</h3>
                             <button class="settings-btn danger-btn" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Выйти из аккаунта</button>
                             <button class="settings-btn danger-btn" id="deleteAccountBtn"><i class="fas fa-trash-alt"></i> Удалить аккаунт</button>
                         </div>
+                        
                     </div>
                 </div>
             </div>
@@ -612,7 +613,43 @@
         </form>
     </div>
 </div>
+<div class="qr-scanner-modal" id="qrScannerModal">
+    <div class="qr-scanner-content">
+        <button class="close-qr-scanner" id="closeQRScanner"><i class="fas fa-times"></i></button>
+        
+        <div class="qr-scanner-header">
+            <h2><i class="fas fa-qrcode"></i> Сканирование QR кода</h2>
+            <p>Наведите камеру на QR код для сканирования</p>
+        </div>
+        
+        <div class="qr-scanner-body">
+            <div id="qrScannerContainer" class="qr-scanner-container">
+                <video id="qrVideo" class="qr-video" playsinline></video>
+                <canvas id="qrCanvas" class="qr-canvas" style="display: none;"></canvas>
+                <div class="qr-overlay">
+                    <div class="qr-frame"></div>
+                </div>
+            </div>
+            
+            <div class="qr-result" id="qrResult">
+                <p>Результат сканирования: <span id="qrResultText">Не сканировано</span></p>
+            </div>
+            
+            <div class="qr-actions">
+                <button class="btn btn-secondary" id="switchCameraBtn">
+                    <i class="fas fa-sync-alt"></i> Сменить камеру
+                </button>
+                <button class="btn btn-primary" id="copyQRResultBtn" disabled>
+                    <i class="fas fa-copy"></i> Копировать
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
+<script src="/scripts/qr-scan.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
     <script>
         // Табы на странице профиля
         document.addEventListener('DOMContentLoaded', function() {
@@ -758,16 +795,7 @@
                 }
             });
             
-            // Logout button functionality
-            const logoutBtn = document.getElementById('logoutBtn');
-            if(logoutBtn) {
-                logoutBtn.addEventListener('click', function() {
-                    if(confirm('Вы уверены, что хотите выйти из аккаунта?')) {
-                        // Здесь код для выхода
-                        window.location.href = '/index.html';
-                    }
-                });
-            }
+            
             
             // Delete account button functionality
             const deleteAccountBtn = document.getElementById('deleteAccountBtn');
@@ -775,7 +803,64 @@
                 deleteAccountBtn.addEventListener('click', function() {
                     if(confirm('ВНИМАНИЕ! Это действие нельзя отменить. Все ваши данные будут удалены безвозвратно. Вы уверены, что хотите удалить аккаунт?')) {
                         if(prompt('Для подтверждения введите "УДАЛИТЬ" (без кавычек):') === 'УДАЛИТЬ') {
-                            // Здесь код для удаления аккаунта
+                            
+                            try {
+
+
+
+            const response =  fetch('http://192.168.0.103/api/user/checkaccess', {
+
+
+            method: 'GET',
+            headers: {
+                    'Content-Type': 'application/json',
+                },
+
+            credentials: 'include'
+
+
+        });
+
+
+
+
+
+        if (response.ok) {
+
+
+            localStorage.removeItem('myToken');
+
+
+            window.location.href = '/index.html';
+
+
+        } else {
+
+
+            throw new Error('Ошибка при выходе');
+
+
+            window.location.href = '/index.html';
+
+
+        }
+
+
+    } catch (error) {
+
+
+        window.location.href = '/index.html';
+
+
+        
+
+
+    }
+
+
+
+
+
                             window.location.href = '/index.html';
                         } else {
                             alert('Неверное подтверждение. Удаление отменено.');
@@ -841,22 +926,7 @@
             }
 
             // Mobile Menu Toggle
-            const mobileMenuToggle = document.getElementById('mobileMenuToggle');
-            const mainNav = document.getElementById('mainNav');
             
-            if(mobileMenuToggle && mainNav) {
-                mobileMenuToggle.addEventListener('click', function() {
-                    mainNav.classList.toggle('active');
-                    const icon = this.querySelector('i');
-                    if (mainNav.classList.contains('active')) {
-                        icon.classList.remove('fa-bars');
-                        icon.classList.add('fa-times');
-                    } else {
-                        icon.classList.remove('fa-times');
-                        icon.classList.add('fa-bars');
-                    }
-                });
-            }
         });
     </script>
     

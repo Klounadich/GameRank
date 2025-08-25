@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function() {
             saveBtn.disabled = true;
             saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Сохранение...';
 
-            const url = 'http://192.168.0.103:5002/api/admin/change-role';
+            const url = 'https://192.168.0.103:5002/api/admin/change-role';
             const response = await fetch(url, {
                 method: 'POST',
                 credentials: 'include',
@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Функция загрузки текущих назначений ролей
     async function loadRoleAssignments() {
         try {
-            const url = 'http://192.168.0.103:5002/api/admin/role-assignments';
+            const url = 'https://192.168.0.103:5002/api/admin/role-assignments';
             const response = await fetch(url, {
                 method: 'GET',
                 headers: {
@@ -142,7 +142,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!confirm('Вы уверены, что хотите удалить это назначение роли?')) return;
 
         try {
-            const url = `http://192.168.0.103:5002/api/admin/remove-role/${assignmentId}`;
+            const url = `https://192.168.0.103/api/admin/remove-role/${assignmentId}`;
             const response = await fetch(url, {
                 method: 'DELETE',
                 headers: {

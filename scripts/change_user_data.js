@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
         try {
             // 1. Сначала меняем имя пользователя (если указано)
             if (newUsername) {
-                const usernameResponse = await fetch('http://192.168.0.103:5001/api/user/change-username', {
+                const usernameResponse = await fetch('https://192.168.0.103/api/user/change-username', {
                     method: 'POST',
                     credentials: 'include',
                     headers: {
@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // 2. Затем меняем email (если указан)
             if (newEmail) {
-                const emailResponse = await fetch('http://192.168.0.103:5001/api/user/change-email', {
+                const emailResponse = await fetch('https://192.168.0.103/api/user/change-email', {
                     method: 'POST',
                     credentials: 'include',
                     headers: {

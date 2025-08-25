@@ -1262,6 +1262,253 @@ body {
     background-color: gray;
 }
 
+/* Стили для модального окна QR-кода */
+.qr-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.qr-modal-content {
+    background-color: var(--dark);
+    border-radius: 12px;
+    padding: 2rem;
+    width: 90%;
+    max-width: 400px;
+    border: 1px solid var(--primary);
+    box-shadow: 0 0 30px rgba(0, 247, 255, 0.3);
+    position: relative;
+}
+
+.close-qr-modal {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    color: var(--light);
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.qr-modal-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.qr-modal-header h2 {
+    color: var(--primary);
+    margin-bottom: 0.5rem;
+}
+
+.qr-modal-header p {
+    color: var(--light);
+}
+
+.qr-code-container {
+    text-align: center;
+    margin: 1.5rem 0;
+}
+
+.qr-code-container img {
+    width: 250px;
+    height: 250px;
+    border: 5px solid white;
+    border-radius: 8px;
+}
+/* Стили для QR сканера */
+.qr-scanner-modal {
+    display: none;
+    position: fixed;
+    z-index: 10000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    align-items: center;
+    justify-content: center;
+}
+
+.qr-scanner-content {
+    background: var(--dark-bg);
+    border: 2px solid var(--primary);
+    border-radius: 12px;
+    width: 90%;
+    max-width: 500px;
+    padding: 2rem;
+    position: relative;
+    box-shadow: 0 0 30px rgba(0, 255, 255, 0.3);
+}
+
+.close-qr-scanner {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    color: var(--light);
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.qr-scanner-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.qr-scanner-header h2 {
+    color: var(--primary);
+    margin-bottom: 0.5rem;
+}
+
+.qr-scanner-header p {
+    color: var(--light);
+    opacity: 0.8;
+}
+
+.qr-scanner-container {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+    border-radius: 8px;
+    background-color: #000;
+}
+
+.qr-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.qr-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.qr-frame {
+    width: 200px;
+    height: 200px;
+    border: 4px solid var(--primary);
+    border-radius: 12px;
+    box-shadow: 0 0 0 4000px rgba(0, 0, 0, 0.5);
+}
+
+.qr-result {
+    background: rgba(42, 42, 58, 0.7);
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    border: 1px solid var(--gray);
+}
+
+.qr-result p {
+    margin: 0;
+    color: var(--light);
+}
+
+#qrResultText {
+    color: var(--secondary);
+    font-weight: bold;
+}
+
+.qr-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+@media (max-width: 768px) {
+    .qr-scanner-content {
+        width: 95%;
+        padding: 1.5rem;
+    }
+    
+    .qr-scanner-container {
+        height: 250px;
+    }
+    
+    .qr-frame {
+        width: 150px;
+        height: 150px;
+    }
+    
+    .qr-actions {
+        flex-direction: column;
+    }
+}
+/* Дополнительные стили для мобильных устройств */
+@media (max-width: 480px) {
+    .qr-scanner-content {
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        max-width: none;
+        border-radius: 0;
+        padding: 1rem;
+    }
+    
+    .qr-scanner-container {
+        height: 60vh;
+    }
+    
+    .qr-frame {
+        width: 70vw;
+        height: 70vw;
+        max-width: 300px;
+        max-height: 300px;
+    }
+    
+    .close-qr-scanner {
+        top: 0.5rem;
+        right: 0.5rem;
+        background: rgba(0,0,0,0.7);
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+/* Индикатор загрузки */
+.qr-loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--primary);
+    font-size: 1.5rem;
+}
+
+.qr-instructions {
+    background-color: rgba(42, 42, 58, 0.7);
+    padding: 1rem;
+    border-radius: 8px;
+    margin-top: 1rem;
+}
+
+.qr-instructions p {
+    color: var(--light);
+    margin: 0.5rem 0;
+    font-size: 0.9rem;
+}
 .google:hover {
     background-color: gray;
 }

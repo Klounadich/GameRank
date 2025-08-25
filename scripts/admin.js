@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log(searchValue)
         if (searchValue) {
             try {
-                const response = await fetch("http://192.168.0.103:5002/api/admin/get", {
+                const response = await fetch("https://192.168.0.103/api2/admin/get", {
                     method: "POST",
                     credentials: 'include',
                     headers: {
@@ -193,7 +193,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         try {
-            const response = await fetch("http://192.168.0.103:5002/api/admin/unban-user", {
+            const response = await fetch("https://192.168.0.103/api2/admin/unban-user", {
                 method: "POST",
                 credentials: 'include',
                 headers: {
@@ -230,7 +230,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         try {
-            const response = await fetch("http://192.168.0.103:5002/api/admin/ban-user", {
+            const response = await fetch("https://192.168.0.103/api2/admin/ban-user", {
             method: "POST",
             credentials:'include',
             headers: {

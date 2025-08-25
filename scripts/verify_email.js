@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     async function checkEmailVerificationStatus() {
         try {
-            const response = await fetch('http://192.168.0.103:5001/api/auth/check-verify', {
+            const response = await fetch('https://192.168.0.103/api/auth/check-verify', {
                 method: 'GET',
                 credentials: 'include'
             });
@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 confirmEmailBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Отправка...';
                 confirmEmailBtn.disabled = true;
                 
-                fetch('http://192.168.0.103:5001/api/auth/verify', {
+                fetch('https://192.168.0.103/api/auth/verify', {
                     method: 'POST',
                     credentials: 'include',
                     headers: {

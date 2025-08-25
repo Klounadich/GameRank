@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Показываем индикатор загрузки
             banTableBody.innerHTML = '<tr><td colspan="3" class="text-center">Загрузка данных...</td></tr>';
             
-            const url = 'http://192.168.0.103:5002/api/admin/get-ban';
+            const url = 'https://192.168.0.103/api2/admin/get-ban';
             
             const response = await fetch(url, {
                 method: 'GET',
@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     try {
-        const response = await fetch("http://192.168.0.103:5002/api/admin/unban-user", {
+        const response = await fetch("https://192.168.0.103/api2/admin/unban-user", {
             method: "POST",
             credentials: 'include',
             headers: {

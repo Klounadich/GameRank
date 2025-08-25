@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Показываем индикатор загрузки
             suspiciousList.innerHTML = '<div class="loading">Загрузка данных...</div>';
             
-            const url = 'http://192.168.0.103:5002/api/admin/get-suspect';
+            const url = 'https://192.168.0.103/api2/admin/get-suspect';
             const response = await fetch(url, {
                 method: 'GET',
                 credentials: 'include',
@@ -96,7 +96,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         try {
-            const response = await fetch("http://192.168.0.103:5002/api/admin/ban-user", {
+            const response = await fetch("https://192.168.0.103/api2/admin/ban-user", {
             method: "POST",
             credentials:'include',
             headers: {
@@ -125,7 +125,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Функция для добавления в наблюдение
     async function watchAccount(accountId) {
         try {
-            const url = 'http://192.168.0.103:5002/api/admin/watch-account';
+            const url = 'https://192.168.0.103/api2/admin/watch-account';
             const response = await fetch(url, {
                 method: 'POST',
                 headers: {
@@ -150,7 +150,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!confirm('Игнорировать это предупреждение?')) return;
         
         try {
-            const url = 'http://192.168.0.103:5002/api/admin/ignore-suspect';
+            const url = 'https://192.168.0.103/api2/admin/ignore-suspect';
             const response = await fetch(url, {
                 method: 'POST',
                 credentials: 'include',

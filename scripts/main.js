@@ -4,6 +4,76 @@ document.addEventListener('DOMContentLoaded', function() {
     // Мобильное меню
     const mobileMenuToggle = document.getElementById('mobileMenuToggle');
     const mainNav = document.getElementById('mainNav');
+    const qrLoginBtn = document.querySelector('.auth-provider.qr');
+    const qrModal = document.getElementById('qrModal');
+    const closeQrModal = document.getElementById('closeQrModal');
+    const qrCodeImage = document.getElementById('qrCodeImage');
+    
+
+    if (qrLoginBtn) {
+        qrLoginBtn.addEventListener('click', async function() {
+            try {
+                // Закрываем модальное окно авторизации
+                if (authModal) {
+                    authModal.style.display = 'none';
+                }
+                
+                // Показываем загрузку
+                qrCodeImage.src = '';
+                qrModal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+                
+                // Отправляем запрос к API (замените URL на ваш)
+                const response = await fetch('https://192.168.0.103/api/auth/qrcode-show', {
+                    method: 'GET',
+                    credentials: 'include'
+                });
+                
+                if (response.ok) {
+                    // Получаем изображение из ответа
+                    const blob = await response.blob();
+                    const imageUrl = URL.createObjectURL(blob);
+                    qrCodeImage.src = imageUrl;
+                } else {
+                    throw new Error('Ошибка при получении QR-кода');
+                }
+            } catch (error) {
+                console.error('Ошибка:', error);
+                alert('Не удалось получить QR-код. Попробуйте позже.');
+                qrModal.style.display = 'none';
+                
+                // Возвращаем модальное окно авторизации
+                if (authModal) {
+                    authModal.style.display = 'block';
+                }
+            }
+        });
+    }
+
+    if (closeQrModal) {
+        closeQrModal.addEventListener('click', function() {
+            qrModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+            
+            // Возвращаем модальное окно авторизации
+            if (authModal) {
+                authModal.style.display = 'block';
+            }
+        });
+    }
+
+    qrModal.addEventListener('click', function(e) {
+        if (e.target === qrModal) {
+            qrModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+            
+            // Возвращаем модальное окно авторизации
+            if (authModal) {
+                authModal.style.display = 'block';
+            }
+        }
+    });
+
     
     mobileMenuToggle.addEventListener('click', function() {
         mainNav.classList.toggle('active');
@@ -25,7 +95,7 @@ document.addEventListener('DOMContentLoaded', function() {
     try {
         // Добавляем случайный параметр для предотвращения кеширования
         const timestamp = new Date().getTime();
-        const response = await fetch(`http://192.168.0.103:5001/api/user/showavatar?t=${timestamp}`, {
+        const response = await fetch(`https://192.168.0.103/api/user/showavatar?t=${timestamp}`, {
             method: 'GET',
             credentials: 'include',
             headers: {
@@ -85,7 +155,7 @@ function refreshAvatar() {
 
     async function LoadData() {
     
-        const response = await fetch('http://192.168.0.103:5001/api/user/usershow', {
+        const response = await fetch('https://192.168.0.103/api/user/usershow', {
             method: 'GET',
             credentials: 'include',
             headers: {
@@ -207,7 +277,7 @@ function updateProfileUI(data) {
 
     try {
         
-        const response = await fetch("http://192.168.0.103:5001/api/auth/authoriz", {
+        const response = await fetch("https://192.168.0.103/api/auth/authoriz", {
             method: "POST",
             credentials:'include',
             headers: {

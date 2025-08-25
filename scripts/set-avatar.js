@@ -180,7 +180,7 @@ document.addEventListener('DOMContentLoaded', function() {
         formData.append('file', file);
 
         // Отправка на сервер
-        fetch('http://192.168.0.103:5001/api/user/set-avatar', {
+        fetch('https://192.168.0.103/api/user/set-avatar', {
             method: 'POST',
             body: formData,
             credentials: 'include' // для отправки куки, если используется аутентификация

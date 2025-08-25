@@ -7,7 +7,7 @@ function preloadCriticalResources() {
     // Preload avatar if likely to be needed
     const link = document.createElement('link');
     link.rel = 'preload';
-    link.href = 'http://192.168.0.103:5001/api/user/showavatar';
+    link.href = 'https://192.168.0.103/api/user/showavatar';
     link.as = 'image';
     document.head.appendChild(link);
 }
@@ -49,7 +49,7 @@ async function LoadProfile() {
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), LOAD_TIMEOUT);
 
-        const response = await fetch('http://192.168.0.103:5001/api/user/usershow', {
+        const response = await fetch('https://192.168.0.103/api/user/usershow', {
             method: 'GET',
             credentials: 'include',
             headers: { 'Accept': 'application/json' },
@@ -93,7 +93,7 @@ async function loadAvatar() {
     if (!avatarImg) return;
 
     try {
-        const response = await fetch(`http://192.168.0.103:5001/api/user/showavatar?v=${Date.now()}`, {
+        const response = await fetch(`https://192.168.0.103/api/user/showavatar?v=${Date.now()}`, {
             method: 'GET',
             credentials: 'include',
             cache: 'no-store'
@@ -189,13 +189,13 @@ function showError(message) {
 
 async function handleLogout() {
     try {
-        const response = await fetch('http://192.168.0.103:5001/api/user/signout', {
+        const response = await fetch('https://192.168.0.103/api/user/signout', {
             method: 'POST',
             credentials: 'include'
         });
 
         if (response.ok) {
-            localStorage.removeItem('authToken');
+            localStorage.removeItem('myToken');
             window.location.href = '/index.html';
         } else {
             throw new Error('Ошибка при выходе');
@@ -281,7 +281,7 @@ function setupEventListeners() {
             }
 
             try {
-                const response = await fetch('http://192.168.0.103:5001/api/user/change-description', {
+                const response = await fetch('https://192.168.0.103/api/user/change-description', {
                     method: 'POST',
                     credentials: 'include',
                     headers: {
@@ -360,7 +360,7 @@ function setupEventListeners() {
             }
             
             // Отправка данных на сервер
-            fetch('http://192.168.0.103:5001/api/user/change-password', {
+            fetch('https://192.168.0.103/api/user/change-password', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

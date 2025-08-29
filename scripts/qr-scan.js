@@ -9,8 +9,6 @@ const copyQRResultBtn = document.getElementById('copyQRResultBtn');
 const switchCameraBtn = document.getElementById('switchCameraBtn');
 
 let stream = null;
-let cameras = [];
-let currentCameraIndex = 0;
 let scanInterval = null;
 let isScanning = false;
 
@@ -19,18 +17,16 @@ const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
-// ПРОВЕРКА ПОДДЕРЖКИ API - ИСПРАВЛЕННАЯ ВЕРСИЯ
+// Проверка поддержки API
 const hasGetUserMedia = !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
-const hasEnumerateDevices = !!(navigator.mediaDevices && navigator.mediaDevices.enumerateDevices);
 
-// Функция для проверки поддержки камеры (дополнительная проверка)
+// Функция для проверки поддержки камеры
 async function checkCameraSupport() {
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
         return false;
     }
     
     try {
-        // Пробуем получить доступ к камере
         const stream = await navigator.mediaDevices.getUserMedia({ video: true });
         if (stream) {
             stream.getTracks().forEach(track => track.stop());
@@ -43,18 +39,18 @@ async function checkCameraSupport() {
     }
 }
 
+// Обработчик кнопки сканирования
 if (scanQRBtn) {
     scanQRBtn.addEventListener('click', async function() {
-        // Дополнительная проверка поддержки камеры
+        if (location.protocol !== 'https:' && location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') {
+            showError('Для работы сканера требуется HTTPS соединение');
+            return;
+        }
+        
         const cameraSupported = await checkCameraSupport();
         
         if (!cameraSupported) {
             showError('Ваш браузер не поддерживает доступ к камере');
-            return;
-        }
-        
-        if (location.protocol !== 'https:' && location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') {
-            showError('Для работы сканера требуется HTTPS соединение');
             return;
         }
         
@@ -64,7 +60,7 @@ if (scanQRBtn) {
     });
 }
 
-// Остальной код остается без изменений...
+// Закрытие сканера
 if (closeQRScanner) {
     closeQRScanner.addEventListener('click', function() {
         stopQRScanner();
@@ -72,6 +68,7 @@ if (closeQRScanner) {
     });
 }
 
+// Закрытие по клику вне области
 qrScannerModal.addEventListener('click', function(e) {
     if (e.target === qrScannerModal) {
         stopQRScanner();
@@ -90,11 +87,7 @@ async function startQRScanner() {
         resetUI();
         showMessage('Запрос доступа к камере...');
         
-        // Получаем список камер
-        await getCameras();
-        
-        // Запускаем камеру
-        await startCamera();
+        await startCameraSimple();
         
         showMessage('Наведите камеру на QR код');
         isScanning = true;
@@ -105,63 +98,23 @@ async function startQRScanner() {
     }
 }
 
-// Сброс UI
-function resetUI() {
-    qrResultText.textContent = 'Не сканировано';
-    copyQRResultBtn.disabled = true;
-    hideInstructions();
-}
-
-// Получение списка камер
-async function getCameras() {
+// Упрощенный запуск камеры
+async function startCameraSimple() {
     try {
-        if (!hasEnumerateDevices) {
-            cameras = [];
-            return;
+        // Базовые настройки
+        const constraints = {
+            video: {
+                width: { min: 640, ideal: 1280, max: 1920 },
+                height: { min: 480, ideal: 720, max: 1080 }
+            },
+            audio: false
+        };
+        
+        // Для мобильных устройств пробуем заднюю камеру
+        if (isMobile) {
+            constraints.video.facingMode = { ideal: 'environment' };
         }
         
-        // Сначала получаем доступ к камере
-        const tempStream = await navigator.mediaDevices.getUserMedia({ 
-            video: { facingMode: { ideal: 'environment' } }
-        });
-        tempStream.getTracks().forEach(track => track.stop());
-        
-        // Затем получаем список устройств
-        const devices = await navigator.mediaDevices.enumerateDevices();
-        cameras = devices.filter(device => device.kind === 'videoinput');
-        
-        console.log('Доступные камеры:', cameras);
-        
-        // Пытаемся определить какая камера задняя, а какая фронтальная
-        if (cameras.length > 1) {
-            // Сортируем камеры: сначала задние, потом фронтальные
-            cameras.sort((a, b) => {
-                const aIsBack = a.label.toLowerCase().includes('back') || 
-                               a.label.toLowerCase().includes('rear') ||
-                               a.label.toLowerCase().includes('environment');
-                const bIsBack = b.label.toLowerCase().includes('back') || 
-                               b.label.toLowerCase().includes('rear') ||
-                               b.label.toLowerCase().includes('environment');
-                
-                if (aIsBack && !bIsBack) return -1;
-                if (!aIsBack && bIsBack) return 1;
-                return 0;
-            });
-            
-            // По умолчанию выбираем первую (заднюю) камеру
-            currentCameraIndex = 0;
-        }
-        
-    } catch (error) {
-        console.warn('Не удалось получить список камер:', error);
-        cameras = [];
-    }
-}
-
-// Запуск камеры
-async function startCamera() {
-    try {
-        const constraints = getCameraConstraints();
         stream = await navigator.mediaDevices.getUserMedia(constraints);
         
         setupVideoElement();
@@ -169,42 +122,26 @@ async function startCamera() {
         startScanning();
         
     } catch (error) {
-        throw error;
-    }
-}
-
-// Получение ограничений для камеры
-function getCameraConstraints() {
-    // Пробуем разные конфигурации для разных платформ
-    const constraints = {
-        video: {
-            width: { ideal: 1280 },
-            height: { ideal: 720 },
-            frameRate: { ideal: 30 }
-        },
-        audio: false
-    };
-    
-    // Для мобильных устройств используем facingMode - ПРИОРИТЕТ ДЛЯ ЗАДНЕЙ КАМЕРЫ
-    if (isMobile) {
-        // Сначала пробуем заднюю камеру
-        constraints.video.facingMode = { ideal: 'environment' };
-        
-        // Если на iOS/Safari, добавляем дополнительные опции
-        if (isIOS || isSafari) {
-            constraints.video.facingMode = { exact: 'environment' };
+        // Если не удалось с environment, пробуем user (фронтальную)
+        if (isMobile && error.name === 'OverconstrainedError') {
+            console.log('Пробуем фронтальную камеру...');
+            const constraints = {
+                video: {
+                    width: { min: 640, ideal: 1280, max: 1920 },
+                    height: { min: 480, ideal: 720, max: 1080 },
+                    facingMode: { ideal: 'user' }
+                },
+                audio: false
+            };
+            
+            stream = await navigator.mediaDevices.getUserMedia(constraints);
+            setupVideoElement();
+            setupVideoStream();
+            startScanning();
+        } else {
+            throw error;
         }
     }
-    
-    // Если есть конкретная камера, используем ее
-    if (cameras.length > 0 && currentCameraIndex < cameras.length) {
-        constraints.video.deviceId = { exact: cameras[currentCameraIndex].deviceId };
-    } else {
-        // Если список камер еще не получен, явно указываем предпочтение задней камере
-        constraints.video.facingMode = { ideal: 'environment' };
-    }
-    
-    return constraints;
 }
 
 // Настройка видео элемента
@@ -212,7 +149,13 @@ function setupVideoElement() {
     qrVideo.setAttribute('autoplay', 'true');
     qrVideo.setAttribute('playsinline', 'true');
     qrVideo.setAttribute('muted', 'true');
-    qrVideo.style.transform = 'scaleX(-1)'; // Зеркальное отображение для фронтальной камеры
+    
+    // Зеркальное отображение только для фронтальной камеры
+    if (stream) {
+        const videoTrack = stream.getVideoTracks()[0];
+        const settings = videoTrack.getSettings();
+        qrVideo.style.transform = settings.facingMode === 'user' ? 'scaleX(-1)' : 'scaleX(1)';
+    }
 }
 
 // Настройка видео потока
@@ -224,18 +167,27 @@ function setupVideoStream() {
             qrVideo.play()
                 .then(() => {
                     console.log('Видео запущено успешно');
+                    adjustCanvasSize();
                     resolve();
                 })
                 .catch(error => {
                     console.warn('Ошибка воспроизведения видео:', error);
-                    // Продолжаем даже если play() выдал ошибку
                     resolve();
                 });
         };
         
-        // Таймаут на случай если onloadedmetadata не сработает
         setTimeout(resolve, 1000);
     });
+}
+
+// Корректировка размера canvas
+function adjustCanvasSize() {
+    const aspectRatio = qrVideo.videoWidth / qrVideo.videoHeight;
+    const maxWidth = Math.min(qrVideo.videoWidth, 800);
+    const height = maxWidth / aspectRatio;
+    
+    qrCanvas.width = maxWidth;
+    qrCanvas.height = height;
 }
 
 // Запуск сканирования
@@ -256,11 +208,7 @@ function processVideoFrame() {
     try {
         const context = qrCanvas.getContext('2d');
         
-        // Устанавливаем размер canvas
-        qrCanvas.width = qrVideo.videoWidth;
-        qrCanvas.height = qrVideo.videoHeight;
-        
-        // Рисуем кадр
+        // Рисуем кадр с учетом aspect ratio
         context.drawImage(qrVideo, 0, 0, qrCanvas.width, qrCanvas.height);
         
         // Распознаем QR код
@@ -284,7 +232,7 @@ function recognizeQRCode(context) {
                 onQRCodeDetected(code.data);
             }
         } else {
-            // Демо-режим если библиотека не загружена
+            // Демо-режим для тестирования
             demoQRRecognition();
         }
     } catch (error) {
@@ -292,36 +240,193 @@ function recognizeQRCode(context) {
     }
 }
 
-// Обработка обнаруженного QR кода
-function onQRCodeDetected(data) {
-    // СОХРАНЯЕМ РАСШИФРОВАННЫЙ ТЕКСТ QR-КОДА
-    qrResultText.textContent = data; // ← ВОТ ТУТ БЫЛ БАГ!
+// Демо-режим распознавания
+function demoQRRecognition() {
+    if (Math.random() < 0.05) { // 5% шанс для демо
+        const demoData = "https://gamerank.ru/api/auth/qr-code-check/efd2361b-6e89-463c-909e-4e47b03bd351/13441a9fa1d28643df9e2ec3a774b13cf7326c5707492c23b55aa3915ae997c0/25.08.2025%2010:13:34";
+        onQRCodeDetected(demoData);
+    }
+}
+
+async function onQRCodeDetected(data) {
+    qrResultText.textContent = data;
     copyQRResultBtn.disabled = false;
     
-    // Вибрация если поддерживается
     if (navigator.vibrate) {
         navigator.vibrate(200);
     }
     
-    // Останавливаем сканирование
     stopQRScanner();
     
-    // ПОКАЗЫВАЕМ СООБЩЕНИЕ ОТДЕЛЬНО (если нужно)
-    // showMessage('QR код распознан!'); ← УБИРАЕМ ЭТУ СТРОЧКУ
+    try {
+        await processScannedQRCode(data);
+    } catch (error) {
+        console.error('Ошибка обработки QR кода:', error);
+        showError('Ошибка обработки QR кода');
+    }
 }
 
-// Демо-режим распознавания
-function demoQRRecognition() {
-    if (Math.random() < 0.02) { // 2% шанс для демо
-        const demoData = [
-            "https://gamerank.ru/demo-qr",
-            "Пример текстового QR кода",
-            "EMAIL:test@example.com",
-            "TEL:+1234567890"
-        ];
-        const randomData = demoData[Math.floor(Math.random() * demoData.length)];
-        onQRCodeDetected(randomData);
+// Парсинг и обработка QR кода
+async function processScannedQRCode(scannedUrl) {
+    try {
+        // Парсим URL
+        const url = new URL(scannedUrl);
+        const segments = url.pathname.split('/').filter(segment => segment !== '');
+        
+        // segments: ["api", "auth", "qr-code-check", "qr_id", "token", "expires"]
+        const qrId = segments[3];     // "efd2361b-6e89-463c-909e-4e47b03bd351"
+        const token = segments[4];    // "13441a9fa1d28643df9e2ec3a774b13cf7326c5707492c23b55aa3915ae997c0"
+        const expires = decodeURIComponent(segments[5]); // "25.08.2025 10:13:34"
+
+        // Показываем диалог подтверждения
+        const shouldConfirm = await showConfirmationDialog("Разрешить вход?", expires);
+        
+        if (!shouldConfirm) {
+            showMessage('Действие отменено');
+            return;
+        }
+
+        // Получаем токен текущего пользователя
+        
+
+        // Отправляем запрос на сервер
+        console.log(qrId)
+        const requestData = { 
+            qrcodeId: qrId, 
+            token: token 
+        };
+
+        const response = await fetch('https://192.168.0.103/api/auth/qrcode-confirm', {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json',
+                
+            },
+            body: JSON.stringify(requestData)
+        });
+
+        if (response.ok) {
+            showMessage('Вход разрешён!');
+            await onLoginConfirmed();
+        } else {
+            const errorData = await response.json().catch(() => ({}));
+            showError(errorData.message || 'Ошибка подтверждения');
+        }
+
+    } catch (error) {
+        console.error('Ошибка парсинга QR кода:', error);
+        showError('Неверный формат QR кода');
     }
+}
+
+// Показать диалог подтверждения
+async function showConfirmationDialog(message, expires) {
+    return new Promise((resolve) => {
+        // Создаем модальное окно подтверждения
+        const modal = document.createElement('div');
+        modal.style.position = 'fixed';
+        modal.style.top = '0';
+        modal.style.left = '0';
+        modal.style.width = '100%';
+        modal.style.height = '100%';
+        modal.style.backgroundColor = 'rgba(0,0,0,0.7)';
+        modal.style.display = 'flex';
+        modal.style.justifyContent = 'center';
+        modal.style.alignItems = 'center';
+        modal.style.zIndex = '10000';
+        modal.style.backdropFilter = 'blur(5px)';
+
+        const dialog = document.createElement('div');
+        dialog.style.background = 'white';
+        dialog.style.padding = '25px';
+        dialog.style.borderRadius = '12px';
+        dialog.style.textAlign = 'center';
+        dialog.style.maxWidth = '350px';
+        dialog.style.width = '90%';
+        dialog.style.boxShadow = '0 10px 30px rgba(0,0,0,0.3)';
+
+        dialog.innerHTML = `
+            <h3 style="margin: 0 0 15px 0; color: #333; font-size: 18px;">${message}</h3>
+            <p style="margin: 0 0 20px 0; color: #666; font-size: 14px;">Действие действительно до: <strong>${expires}</strong></p>
+            <div style="display: flex; gap: 12px; margin-top: 20px; justify-content: center;">
+                <button id="confirmYes" style="padding: 12px 24px; background: #4CAF50; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: 500;">Разрешить</button>
+                <button id="confirmNo" style="padding: 12px 24px; background: #f44336; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: 500;">Отмена</button>
+            </div>
+        `;
+
+        modal.appendChild(dialog);
+        document.body.appendChild(modal);
+
+        // Обработчики кнопок
+        document.getElementById('confirmYes').addEventListener('click', () => {
+            document.body.removeChild(modal);
+            resolve(true);
+        });
+
+        document.getElementById('confirmNo').addEventListener('click', () => {
+            document.body.removeChild(modal);
+            resolve(false);
+        });
+
+        // Закрытие по клику на фон
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                document.body.removeChild(modal);
+                resolve(false);
+            }
+        });
+    });
+}
+
+// Получение auth token
+
+
+// Получение токена из cookies
+function getTokenFromCookies() {
+    const cookieValue = document.cookie
+        .split('; ')
+        .find(row => row.startsWith('auth_token='))
+        ?.split('=')[1];
+    
+    return cookieValue ? decodeURIComponent(cookieValue) : null;
+}
+
+// Действия после успешного подтверждения входа
+async function onLoginConfirmed() {
+    console.log('Логин подтвержден');
+    
+    // Показываем сообщение об успехе
+    showToast('Вход успешно разрешен!', 'success');
+    
+    // Закрываем модальное окно через 2 секунды
+    setTimeout(() => {
+        closeModal();
+    }, 2000);
+}
+
+// Показать toast сообщение
+function showToast(message, type = 'info') {
+    const toast = document.createElement('div');
+    toast.textContent = message;
+    toast.style.position = 'fixed';
+    toast.style.top = '20px';
+    toast.style.right = '20px';
+    toast.style.background = type === 'error' ? '#f44336' : type === 'success' ? '#4CAF50' : '#2196F3';
+    toast.style.color = 'white';
+    toast.style.padding = '12px 20px';
+    toast.style.borderRadius = '6px';
+    toast.style.zIndex = '10001';
+    toast.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
+    toast.style.fontSize = '14px';
+    
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+        if (document.body.contains(toast)) {
+            document.body.removeChild(toast);
+        }
+    }, 3000);
 }
 
 // Остановка сканера
@@ -349,7 +454,7 @@ function stopQRScanner() {
     }
 }
 
-// Обработка ошибок
+// Обработка ошибок камеры
 function handleCameraError(error) {
     console.error('Camera error:', error);
     
@@ -366,7 +471,7 @@ function handleCameraError(error) {
             errorMessage = 'Камера уже используется другим приложением';
             break;
         case 'OverconstrainedError':
-            errorMessage = 'Требуемая камера недоступна';
+            errorMessage = 'Требуемая камера недоступна. Используйте другую камеру';
             break;
         case 'SecurityError':
             errorMessage = 'Доступ к камере заблокирован по соображениям безопасности';
@@ -376,7 +481,6 @@ function handleCameraError(error) {
     }
     
     showError(errorMessage);
-    showPlatformSpecificInstructions();
 }
 
 // Показать сообщение
@@ -391,100 +495,11 @@ function showError(message) {
     qrResultText.style.color = 'var(--accent)';
 }
 
-// Показать инструкции для конкретной платформы
-function showPlatformSpecificInstructions() {
-    let instructions = '';
-    
-    if (isIOS) {
-        instructions = getIOSInstructions();
-    } else if (isSafari) {
-        instructions = getSafariInstructions();
-    } else {
-        instructions = getGeneralInstructions();
-    }
-    
-    showInstructions(instructions);
-}
-
-function getIOSInstructions() {
-    return `
-        <div class="platform-instructions">
-            <h4>📱 Инструкция для iPhone:</h4>
-            <p>1. Нажмите "Разрешить" при запросе доступа к камере</p>
-            <p>2. Если не видите запрос:</p>
-            <p>   • Откройте <strong>Настройки → Safari → Камера</strong></p>
-            <p>   • Разрешите доступ для этого сайта</p>
-            <p>3. Убедитесь, что используете HTTPS</p>
-        </div>
-    `;
-}
-
-function getSafariInstructions() {
-    return `
-        <div class="platform-instructions">
-            <h4>🖥️ Инструкция для Safari:</h4>
-            <p>1. Нажмите "Разрешить" при запросе доступа к камере</p>
-            <p>2. Проверьте настройки:</p>
-            <p>   • Safari → Настройки → Веб-сайты → Камера</p>
-            <p>   • Разрешите доступ для этого сайта</p>
-            <p>3. Обновите страницу</p>
-        </div>
-    `;
-}
-
-function getGeneralInstructions() {
-    return `
-        <div class="platform-instructions">
-            <h4>🔧 Общие инструкции:</h4>
-            <p>1. Разрешите доступ к камере в браузере</p>
-            <p>2. Убедитесь, что камера подключена и работает</p>
-            <p>3. Проверьте, что другие приложения не используют камера</p>
-            <p>4. Обновите драйверы камеры</p>
-            <p>5. Попробуйте другой браузер (Chrome, Firefox)</p>
-        </div>
-    `;
-}
-
-function showInstructions(html) {
-    const container = document.querySelector('.qr-scanner-body');
-    let instructionsDiv = container.querySelector('.platform-instructions');
-    
-    if (!instructionsDiv) {
-        instructionsDiv = document.createElement('div');
-        instructionsDiv.className = 'platform-instructions';
-        container.appendChild(instructionsDiv);
-    }
-    
-    instructionsDiv.innerHTML = html;
-}
-
-function hideInstructions() {
-    const instructions = document.querySelector('.platform-instructions');
-    if (instructions) {
-        instructions.remove();
-    }
-}
-
-// Смена камеры
-if (switchCameraBtn) {
-    switchCameraBtn.style.display = cameras.length > 1 ? 'flex' : 'none';
-    
-    switchCameraBtn.addEventListener('click', async function() {
-        if (cameras.length <= 1) {
-            alert('Доступна только одна камера');
-            return;
-        }
-        
-        stopQRScanner();
-        currentCameraIndex = (currentCameraIndex + 1) % cameras.length;
-        
-        try {
-            await startQRScanner();
-        } catch (error) {
-            console.error('Ошибка переключения камеры:', error);
-            showError('Ошибка переключения камеры');
-        }
-    });
+// Сброс UI
+function resetUI() {
+    qrResultText.textContent = 'Не сканировано';
+    qrResultText.style.color = 'var(--light)';
+    copyQRResultBtn.disabled = true;
 }
 
 // Копирование результата
@@ -497,7 +512,6 @@ if (copyQRResultBtn) {
                 showTempMessage('Текст скопирован!');
             })
             .catch(err => {
-                // Fallback метод
                 copyToClipboardFallback(text);
             });
     });
@@ -505,12 +519,14 @@ if (copyQRResultBtn) {
 
 function showTempMessage(message) {
     const originalText = qrResultText.textContent;
+    const originalColor = qrResultText.style.color;
+    
     qrResultText.textContent = message;
     qrResultText.style.color = 'var(--secondary)';
     
     setTimeout(() => {
         qrResultText.textContent = originalText;
-        qrResultText.style.color = 'var(--light)';
+        qrResultText.style.color = originalColor;
     }, 2000);
 }
 
@@ -539,4 +555,9 @@ document.addEventListener('DOMContentLoaded', async function() {
         scanQRBtn.style.opacity = '0.5';
         scanQRBtn.title = 'Ваш браузер не поддерживает доступ к камере';
     }
+});
+
+// Глобальная обработка ошибок
+window.addEventListener('error', function(e) {
+    console.error('Global error:', e.error);
 });

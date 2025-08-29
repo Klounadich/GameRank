@@ -8,7 +8,10 @@ document.addEventListener('DOMContentLoaded', function() {
         const newEmail = document.getElementById('email').value.trim();
         const token = localStorage.getItem('myToken');
 
-       
+        // Получаем значения социальных сетей
+        const steamUrl = document.getElementById('steamInput').value.trim();
+        const githubUrl = document.getElementById('githubInput').value.trim();
+        const redditUrl = document.getElementById('redditInput').value.trim();
 
         try {
             // 1. Сначала меняем имя пользователя (если указано)
@@ -28,7 +31,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     throw new Error(errorData?.message || 'Ошибка при изменении имени');
                 }
 
-                // Обновляем токен, если сервер его вернул
                 const usernameResult = await usernameResponse.json();
                 if (usernameResult.token) {
                     localStorage.setItem('myToken', usernameResult.token);
@@ -52,10 +54,43 @@ document.addEventListener('DOMContentLoaded', function() {
                     throw new Error(errorData?.message || 'Ошибка при изменении email');
                 }
 
-                // Обновляем токен, если сервер его вернул
                 const emailResult = await emailResponse.json();
                 if (emailResult.token) {
                     localStorage.setItem('myToken', emailResult.token);
+                }
+            }
+
+            // 3. Отправляем социальные сети ТОЛЬКО если хотя бы одна ссылка заполнена
+            const hasSocialLinks = steamUrl || githubUrl || redditUrl;
+            
+            if (hasSocialLinks) {
+                const socialLinksData = {
+                    SteamLink: steamUrl || "",
+                    GithubLink: githubUrl || "",
+                    RedditLink: redditUrl || ""
+                };
+
+                console.log('Отправляемые данные социальных сетей:', socialLinksData);
+
+                const socialResponse = await fetch('https://192.168.0.103/api/user/change-sociallinks', {
+                    method: 'POST',
+                    credentials: 'include',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('myToken')}`
+                    },
+                    body: JSON.stringify(socialLinksData)
+                });
+
+                if (!socialResponse.ok) {
+                    const errorData = await socialResponse.json().catch(() => null);
+                    console.error('Полная ошибка социальных сетей:', errorData);
+                    throw new Error(errorData?.message || `Ошибка при изменении социальных сетей: ${socialResponse.status}`);
+                }
+
+                const socialResult = await socialResponse.json();
+                if (socialResult.token) {
+                    localStorage.setItem('myToken', socialResult.token);
                 }
             }
 

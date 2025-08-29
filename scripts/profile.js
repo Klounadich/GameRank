@@ -181,6 +181,68 @@ function updateProfileUI(data) {
     if (DescriptionEl) DescriptionEl.textContent = Description;
     if (usernameEl) usernameEl.textContent = username;
     if (emailEl) emailEl.innerHTML = `<i class="fas fa-envelope"></i> ${email}`;
+    
+    // ОБРАБОТКА СОЦИАЛЬНЫХ СЕТЕЙ ИЗ ОТВЕТА СЕРВЕРА
+    updateSocialLinksFromResponse(data);
+}
+
+function updateSocialLinksFromResponse(data) {
+    const socialLinks = data?.socialLinks;
+    
+    if (!socialLinks || !Array.isArray(socialLinks) || socialLinks.length === 0) {
+        console.log('Социальные сети не найдены в ответе');
+        return;
+    }
+
+    console.log('Обновляем социальные сети:', socialLinks);
+
+    // Получаем элементы иконок
+    const steamLinkBio = document.getElementById('steamLinkBio');
+    const githubLinkBio = document.getElementById('githubLinkBio');
+    const redditLinkBio = document.getElementById('redditLinkBio');
+    
+    const steamInput = document.getElementById('steamInput');
+    const githubInput = document.getElementById('githubInput');
+    const redditInput = document.getElementById('redditInput');
+
+    // Берем первый элемент массива (там только один объект)
+    const socialData = socialLinks[0];
+    
+    // Обрабатываем Steam
+    if (socialData.steamLink && socialData.steamLink.trim()) {
+        const steamUrl = socialData.steamLink.trim();
+        if (steamLinkBio) {
+            steamLinkBio.href = steamUrl;
+            steamLinkBio.classList.remove('gray');
+            steamLinkBio.classList.add('steam');
+        }
+        if (steamInput) steamInput.value = steamUrl;
+        console.log('Steam обновлен:', steamUrl);
+    }
+    
+    // Обрабатываем GitHub
+    if (socialData.githubLink && socialData.githubLink.trim()) {
+        const githubUrl = socialData.githubLink.trim();
+        if (githubLinkBio) {
+            githubLinkBio.href = githubUrl;
+            githubLinkBio.classList.remove('gray');
+            githubLinkBio.classList.add('github');
+        }
+        if (githubInput) githubInput.value = githubUrl;
+        console.log('GitHub обновлен:', githubUrl);
+    }
+    
+    // Обрабатываем Reddit
+    if (socialData.redditLink && socialData.redditLink.trim()) {
+        const redditUrl = socialData.redditLink.trim();
+        if (redditLinkBio) {
+            redditLinkBio.href = redditUrl;
+            redditLinkBio.classList.remove('gray');
+            redditLinkBio.classList.add('reddit');
+        }
+        if (redditInput) redditInput.value = redditUrl;
+        console.log('Reddit обновлен:', redditUrl);
+    }
 }
 
 function showError(message) {

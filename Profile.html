@@ -795,80 +795,39 @@
                 }
             });
             
-            
-            
             // Delete account button functionality
-            const deleteAccountBtn = document.getElementById('deleteAccountBtn');
-            if(deleteAccountBtn) {
-                deleteAccountBtn.addEventListener('click', function() {
-                    if(confirm('ВНИМАНИЕ! Это действие нельзя отменить. Все ваши данные будут удалены безвозвратно. Вы уверены, что хотите удалить аккаунт?')) {
-                        if(prompt('Для подтверждения введите "УДАЛИТЬ" (без кавычек):') === 'УДАЛИТЬ') {
-                            
-                            try {
-
-
-
-            const response =  fetch('http://192.168.0.103/api/user/checkaccess', {
-
-
-            method: 'GET',
-            headers: {
-                    'Content-Type': 'application/json',
-                },
-
-            credentials: 'include'
-
-
-        });
-
-
-
-
-
-        if (response.ok) {
-
-
-            localStorage.removeItem('myToken');
-
-
-            window.location.href = '/index.html';
-
-
-        } else {
-
-
-            throw new Error('Ошибка при выходе');
-
-
-            window.location.href = '/index.html';
-
-
-        }
-
-
-    } catch (error) {
-
-
-        window.location.href = '/index.html';
-
-
-        
-
-
-    }
-
-
-
-
-
-                            window.location.href = '/index.html';
-                        } else {
-                            alert('Неверное подтверждение. Удаление отменено.');
-                        }
+const deleteAccountBtn = document.getElementById('deleteAccountBtn');
+if(deleteAccountBtn) {
+    deleteAccountBtn.addEventListener('click', function() {
+        if(confirm('ВНИМАНИЕ! Это действие нельзя отменить. Все ваши данные будут удалены безвозвратно. Вы уверены, что хотите удалить аккаунт?')) {
+            if(prompt('Для подтверждения введите "УДАЛИТЬ" (без кавычек):') === 'УДАЛИТЬ') {
+                // Исправленный блок кода
+                fetch('https://192.168.0.103/api/user/checkaccess', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    credentials: 'include'
+                })
+                .then(response => {
+                    if (response.ok) {
+                        localStorage.removeItem('myToken');
+                        window.location.href = '/index.html';
+                    } else {
+                        throw new Error('Ошибка при выходе');
                     }
+                })
+                .catch(error => {
+                    window.location.href = '/index.html';
                 });
+            } else {
+                alert('Неверное подтверждение. Удаление отменено.');
             }
-
+        }
+    });
+}
+            
+            
             // Profile Edit Modal Functionality
             const profileEditModal = document.getElementById('profileEditModal');
             const editProfileBtn = document.querySelector('.edit-profile');

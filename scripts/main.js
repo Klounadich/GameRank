@@ -124,12 +124,12 @@ document.addEventListener('DOMContentLoaded', function() {
                     const statusData = await response.json();
                     
                     switch (statusData.status) {
-                        case 'confirmed':
+                        case null:
                             // Успешный вход!
                             clearInterval(qrPollingInterval);
                             clearInterval(timerInterval);
                             showAlert('Вход выполнен успешно!', 'success');
-                            
+                            window.location.href = '/Profile.html';
                             // Сохраняем данные пользователя
                             
                             
@@ -162,6 +162,8 @@ document.addEventListener('DOMContentLoaded', function() {
                             
                         default:
                             console.log('Неизвестный статус:', statusData.status);
+                            showAlert('Вход выполнен успешно!', 'success');
+                            window.location.href = '/Profile.html';
                     }
                 }
             } catch (error) {

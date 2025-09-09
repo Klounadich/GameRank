@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function() {
             saveBtn.disabled = true;
             saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Сохранение...';
 
-            const url = 'https://192.168.0.103:5002/api/admin/change-role';
+            const url = 'https://192.168.0.103/api2/admin/change-role';
             const response = await fetch(url, {
                 method: 'POST',
                 credentials: 'include',

@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const closeQrModal = document.getElementById('closeQrModal');
     const qrCodeImage = document.getElementById('qrCodeImage');
     
+    
     // Переменные для QR-логина
     let qrId = null;
     let qrPollingInterval = null;
@@ -398,7 +399,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 showAlert('Вход выполнен успешно!', 'success');
                 window.location.href = "/Profile.html";
             } else {
-                showAlert(result.Message || 'Ошибка входа', 'error');
+                document.getElementById('passwordRecoveryLink').style.display = 'block';
+                console.log(result)
+                showAlert(result.Errors || 'Ошибка входа', 'error');
             }
         } catch (error) {
             showAlert('Ошибка сети', 'error');
@@ -435,4 +438,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }, duration);
         }
     }
+
+    
 });

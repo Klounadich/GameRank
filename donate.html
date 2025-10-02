@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameRank - Поддержать проект</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/donate.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="icon" href="/img/Logo.png" type="image/png">
+</head>
+<body>
+    <div class="cyberpunk-overlay"></div>
+    
+    <header class="cyber-header">
+        <div class="header-container">
+            <div class="logo">
+                <a href="/index.html"><span class="logo-icon"><img src="/img/Logo.png" width="100px"></span>
+                <span class="logo-text">GameRank</span></a>
+            </div>
+            <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            <nav class="main-nav" id="mainNav">
+                <ul>
+                    <li><a href="index.html" class="nav-link"><i class="fas fa-home"></i> Главная</a></li>
+                    <li><a href="/Tier-List.html" class="nav-link"><i class="fas fa-plus-circle"></i> Создать тир-лист</a></li>
+                    <li><a href="#" class="nav-link"><i class="fas fa-newspaper"></i> Новости</a></li>
+                    <li><a href="#" class="nav-link" id="ttt"><i class="fas fa-cog"></i> Настройки</a></li>
+                    <li><a href="/donate.html" class="nav-link active"><i class="fas fa-heart"></i> Поддержать</a></li>
+                </ul>
+                <button class="admin-panel-btn">
+                    <i class="fas fa-cog"></i> Админ-панель
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="donate-page-container">
+            <section class="donate-header">
+                <h1 class="cyber-text">Поддержать GameRank</h1>
+                <p class="hero-subtext">Ваша поддержка помогает нам развивать проект и добавлять новые функции</p>
+            </section>
+
+            <section class="donate-content">
+                <div class="donate-card">
+                    <div class="donate-info">
+                        <div class="donate-icon">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <h2>Почему важна ваша поддержка?</h2>
+                        <p>GameRank - это проект, созданный энтузиастами для геймеров. Ваши пожертвования помогают:</p>
+                        <ul>
+                            <li>Поддерживать работу серверов</li>
+                            <li>Разрабатывать новые функции</li>
+                            <li>Улучшать пользовательский опыт</li>
+                            <li>Создавать больше контента</li>
+                        </ul>
+                    </div>
+
+                    <div class="donate-form">
+                        <div class="amount-section">
+                            <h3>Сумма пожертвования</h3>
+                            <div class="amount-options">
+                                <button class="amount-option" data-amount="100">100 ₽</button>
+                                <button class="amount-option" data-amount="300">300 ₽</button>
+                                <button class="amount-option" data-amount="500">500 ₽</button>
+                                <button class="amount-option" data-amount="1000">1000 ₽</button>
+                            </div>
+                            <div class="custom-amount">
+                                <input type="number" id="customAmount" placeholder="Другая сумма" min="10" max="50000">
+                                <span class="currency">₽</span>
+                            </div>
+                        </div>
+
+                        <div class="payment-section">
+                            <h3>Способ оплаты</h3>
+                            <div class="saved-cards" id="savedCards">
+                                <!-- Сохраненные карты будут загружены с бэкенда -->
+                            </div>
+                            
+                            <div class="payment-options">
+                                <button class="payment-option" id="manualCardBtn">
+                                    <i class="fas fa-credit-card"></i>
+                                    <span>Ввести данные карты вручную</span>
+                                </button>
+                            </div>
+
+                            <div class="card-form" id="cardForm" style="display: none;">
+                                <div class="form-group">
+                                    <label for="cardNumber">Номер карты</label>
+                                    <input type="text" id="cardNumber" placeholder="0000 0000 0000 0000" maxlength="19">
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="cardExpiry">Срок действия</label>
+                                        <input type="text" id="cardExpiry" placeholder="ММ/ГГ" maxlength="5">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="cardCvc">CVC/CVV</label>
+                                        <input type="text" id="cardCvc" placeholder="000" maxlength="3">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="cardHolder">Имя владельца</label>
+                                    <input type="text" id="cardHolder" placeholder="IVAN IVANOV">
+                                </div>
+                                <div class="form-checkbox">
+                                    <input type="checkbox" id="saveCard">
+                                    <label for="saveCard">Запомнить карту для будущих платежей</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="donate-actions">
+                            <button class="donate-btn" id="donateBtn">
+                                <i class="fas fa-heart"></i>
+                                Поддержать проект
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="donate-benefits">
+                <h2>Что получают наши сторонники?</h2>
+                <div class="benefits-grid">
+                    <div class="benefit-card">
+                        <div class="benefit-icon">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <h3>Особая отметка</h3>
+                        <p>Специальный значок в вашем профиле</p>
+                    </div>
+                    <div class="benefit-card">
+                        <div class="benefit-icon">
+                            <i class="fas fa-gem"></i>
+                        </div>
+                        <h3>Ранний доступ</h3>
+                        <p>Доступ к новым функциям до их публичного релиза</p>
+                    </div>
+                    <div class="benefit-card">
+                        <div class="benefit-icon">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <h3>Наша благодарность</h3>
+                        <p>Знайте, что вы помогаете развивать любимый проект</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="cyber-footer">
+        <div class="footer-content">
+            <div class="footer-logo">
+                <img src="/img/Logo.png" width="80px"> GameRank
+            </div>
+            <div class="footer-links">
+                <a href="#">О нас</a>
+                <a href="#">Правила</a>
+                <a href="#">Контакты</a>
+                <a href="#">API</a>
+            </div>
+            <div class="footer-social">
+                <a href="#"><i class="fab fa-discord"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-steam"></i></a>
+            </div>
+        </div>
+        <div class="footer-disclaimer">
+            © 2023 GameRank. Все права защищены. Все названия игр и связанные с ними изображения являются собственностью их правообладателей.
+        </div>
+    </footer>
+
+    <!-- Cyber Alert для уведомлений -->
+    <div class="cyber-alert" id="cyberAlert">
+        <div class="cyber-alert-content">
+            <div class="cyber-alert-icon">
+                <i class="fas fa-info-circle"></i>
+            </div>
+            <div class="cyber-alert-message" id="alertMessage"></div>
+            <button class="cyber-alert-close" id="closeAlert">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+
+    <script src="/scripts/donate.js"></script>
+</body>
+</html>

@@ -165,37 +165,41 @@
     </div>
 </div>
 
-    <!-- Модальное окно авторизации -->
     <div class="auth-modal" id="authModal">
-        <div class="auth-content">
-            <span class="close-auth">&times;</span>
-            <h2>Войти в GameRank</h2>
-            <div class="auth-providers">
-                <button class="auth-provider google"><i class="fab fa-google"></i> Google *Soon*</button>
-                <button class="auth-provider github"><i class="fab fa-github"></i> GitHub *Soon*</button>
-                <button class="auth-provider steam"><i class="fab fa-steam"></i> Steam *Soon*</button>
-                <button class="auth-provider qr"><i class="fa-solid fa-qrcode"></i> Вход по QR-коду</button>
+    <div class="auth-content">
+        <span class="close-auth">&times;</span>
+        <h2>Войти в GameRank</h2>
+        <div class="auth-providers">
+            <button class="auth-provider google"><i class="fab fa-google"></i> Google *Soon*</button>
+            <button class="auth-provider github"><i class="fab fa-github"></i> GitHub *Soon*</button>
+            <button class="auth-provider steam"><i class="fab fa-steam"></i> Steam *Soon*</button>
+            <button class="auth-provider qr"><i class="fa-solid fa-qrcode"></i> Вход по QR-коду</button>
+        </div>
+        <div class="auth-divider">
+            <span>или</span>
+        </div>
+        <form class="auth-form">
+            <input type="text" placeholder="Имя пользователя" id="Auth_UserName" required>
+            <div class="password-container">
+                <input type="password" placeholder="Пароль" id="Auth_Pass" required>
+                <button type="button" class="toggle-password" id="togglePassword">
+                    <i class="fas fa-eye"></i>
+                </button>
             </div>
-            <div class="auth-divider">
-                <span>или</span>
+            <!-- Ссылка для восстановления пароля (будет показана при ошибке) -->
+            <div id="passwordRecoveryLink" style="display: none; margin-top: 10px;">
+                <a href="/PasswordRecovery.html" style="color: #00f0ff; text-decoration: none;">
+                    <i class="fas fa-key"></i> Забыли пароль?
+                </a>
             </div>
-            <form class="auth-form">
-                <input type="text" placeholder="Имя пользователя" id="Auth_UserName" required>
-                <div class="password-container">
-                    <input type="password" placeholder="Пароль" id="Auth_Pass" required>
-                    Восстановить пароль
-                    <button type="button" class="toggle-password" id="togglePassword">
-                        <i class="fas fa-eye"></i>
-                    </button>
-                </div>
-                <button type="submit" class="auth-submit">Войти</button>
-            </form>
-            
-            <div class="auth-footer">
-                Нет аккаунта? <a href="/Registration.html">Зарегистрироваться</a>
-            </div>
+            <button type="submit" class="auth-submit">Войти</button>
+        </form>
+        
+        <div class="auth-footer">
+            Нет аккаунта? <a href="/Registration.html">Зарегистрироваться</a>
         </div>
     </div>
+</div>
 
     <script src="/scripts/main.js"></script>
     <script>
